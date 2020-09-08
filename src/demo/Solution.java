@@ -672,8 +672,12 @@ public class Solution {
     }
 
     public static TreeNode middle(List<ListNode> list) {
-        if (list.isEmpty()) return null;
-        if (list.size() == 1) return new TreeNode(list.get(0).val);
+        if (list.isEmpty()) {
+            return null;
+        }
+        if (list.size() == 1) {
+            return new TreeNode(list.get(0).val);
+        }
         int len = list.size();
         TreeNode treeNode = new TreeNode(list.get(len / 2).val);
         treeNode.left = middle(list.subList(0, len / 2));
@@ -764,12 +768,16 @@ public class Solution {
         if (root == null) return 0;
         //这道题递归条件里分为三种情况
         //1.左孩子和有孩子都为空的情况，说明到达了叶子节点，直接返回1即可
-        if (root.left == null && root.right == null) return 1;
+        if (root.left == null && root.right == null) {
+            return 1;
+        }
         //2.如果左孩子和由孩子其中一个为空，那么需要返回比较大的那个孩子的深度
         int m1 = minDepth(root.left);
         int m2 = minDepth(root.right);
         //这里其中一个节点为空，说明m1和m2有一个必然为0，所以可以返回m1 + m2 + 1;
-        if (root.left == null || root.right == null) return m1 + m2 + 1;
+        if (root.left == null || root.right == null) {
+            return m1 + m2 + 1;
+        }
 
         //3.最后一种情况，也就是左右孩子都不为空，返回最小深度+1即可
         return Math.min(m1, m2) + 1;
@@ -1045,12 +1053,20 @@ public class Solution {
             int p = 0;
             char t;
             for (char c : s.toCharArray()) {
-                if (c >= '0' && c <= '9') t = 'd';
-                else if (c == '+' || c == '-') t = 's';
-                else if (c == 'e' || c == 'E') t = 'e';
-                else if (c == '.' || c == ' ') t = c;
-                else t = '?';
-                if (!states[p].containsKey(t)) return false;
+                if (c >= '0' && c <= '9') {
+                    t = 'd';
+                } else if (c == '+' || c == '-') {
+                    t = 's';
+                } else if (c == 'e' || c == 'E') {
+                    t = 'e';
+                } else if (c == '.' || c == ' ') {
+                    t = c;
+                } else {
+                    t = '?';
+                }
+                if (!states[p].containsKey(t)) {
+                    return false;
+                }
                 p = (int) states[p].get(t);
             }
             return p == 2 || p == 3 || p == 7 || p == 8;
@@ -1219,8 +1235,37 @@ public class Solution {
         return ret;
     }
 
+    List<List<Integer>> ans = new ArrayList<List<Integer>>();
+
+    public static List<List<Integer>> combine(int n, int k) {
+        List<Integer> temp = new ArrayList<Integer>();
+        List<List<Integer>> ans = new ArrayList<List<Integer>>();
+        // 初始化
+        // 将 temp 中 [0, k - 1] 每个位置 i 设置为 i + 1，即 [0, k - 1] 存 [1, k]
+        // 末尾加一位 n + 1 作为哨兵
+        for (int i = 1; i <= k; ++i) {
+            temp.add(i);
+        }
+        temp.add(n + 1);
+
+        int j = 0;
+        while (j < k) {
+            ans.add(new ArrayList<Integer>(temp.subList(0, k)));
+            j = 0;
+            // 寻找第一个 temp[j] + 1 != temp[j + 1] 的位置 t
+            // 我们需要把 [0, t - 1] 区间内的每个位置重置成 [1, t]
+            while (j < k && temp.get(j) + 1 == temp.get(j + 1)) {
+                temp.set(j, j + 1);
+                ++j;
+            }
+            // j 是第一个 temp[j] + 1 != temp[j + 1] 的位置
+            temp.set(j, temp.get(j) + 1);
+        }
+        return ans;
+    }
+
     public static void main(String[] args) throws IOException {
-        System.out.println(binaryTreePaths(stringToTreeNode("[1,2,3,null,5]")));
+        System.out.println(combine(5,3));
     }
 
 }
