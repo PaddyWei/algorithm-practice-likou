@@ -1264,8 +1264,60 @@ public class Solution {
         return ans;
     }
 
+//    public static List<List<Integer>> combinationSum(int[] candidates, int target) {
+//        List<List<Integer>> result = new ArrayList<>();
+//        backtrack(result, new ArrayList<>(), candidates, target, 0);
+//        return result;
+//    }
+//
+//    private static void backtrack(List<List<Integer>> result, List<Integer> cur, int candidates[], int target, int start) {
+//        if (target == 0) {
+//            //找到了一组，添加到集合中
+//            result.add(new ArrayList<>(cur));
+//            return;
+//        }
+//        //相当于遍历N叉树的子节点
+//        for (int i = start; i < candidates.length; i++) {
+//            //如果当前节点大于target我们就不要选了
+//            if (target < candidates[i])
+//                continue;
+//            //由于在java中List是引用传递，所以这里要重新创建一个
+//            List<Integer> list = new ArrayList<>(cur);
+//            list.add(candidates[i]);
+//            backtrack(result, list, candidates, target - candidates[i], i);
+//        }
+//    }
+
+    public static List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> result = new ArrayList<>();
+        getResult(result, new ArrayList<>(), candidates, target, 0);
+        return result;
+    }
+
+    private static void getResult(List<List<Integer>> result, List<Integer> cur, int candidates[], int target, int start) {
+        if (target == 0) {
+            result.add(new ArrayList<>(cur));
+            return;
+        }
+        for (int i = start; i < candidates.length; i++) {
+            if (target < candidates[i])
+                continue;
+            //选择当前节点，类似于从当前节点开始往下遍历
+            cur.add(candidates[i]);
+            getResult(result, cur, candidates, target - candidates[i], i);
+            //回到当前节点的时候我们把当前节点给移除,
+            // 然后通过循环走同一层的其他节点。
+            //举个例子，比如上面图中，最开始的时候
+            // 我们先选择2，然后沿着这个分支走下去，
+            //当回到当前分支的时候我们把2给移除，然后
+            // 选择同一层的下一个3，沿着这个节点
+            //分支走下去……
+            cur.remove(cur.size() - 1);
+        }
+    }
+
     public static void main(String[] args) throws IOException {
-        System.out.println(combine(5,3));
+        System.out.println(combinationSum(new int[]{2,3,5},9));
     }
 
 }
