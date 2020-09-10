@@ -3,8 +3,6 @@ package demo;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 public class Solution {
     public static int[] twoSum(int[] nums, int target) {
@@ -1316,8 +1314,34 @@ public class Solution {
         }
     }
 
+    public static List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        List<List<Integer>> result = new ArrayList<>();
+        //将数组进行排序，方便去除重复项
+        Arrays.sort(candidates);
+        getResult2(result, new ArrayList<>(), candidates, target, 0);
+        //返回List中去掉重复项
+        return result.stream().distinct().collect(Collectors.toList());
+    }
+
+    private static void getResult2(List<List<Integer>> result, List<Integer> cur, int candidates[], int target, int start) {
+        if (target == 0) {
+            result.add(new ArrayList<>(cur));
+            return;
+        }
+        for (int i = start; i < candidates.length; i++) {
+            if (target < candidates[i])
+                continue;
+            //选择当前节点，类似于从当前节点开始往下遍历
+            cur.add(candidates[i]);
+            //i+1：不获取当前位置的数值，当前位置数值不在重复使用
+            getResult2(result, cur, candidates, target - candidates[i], i + 1);
+            //删除上一节点数值，重新进行添加计算是否等于target
+            cur.remove(cur.size() - 1);
+        }
+    }
+
     public static void main(String[] args) throws IOException {
-        System.out.println(combinationSum(new int[]{2,3,5},9));
+        System.out.println(combinationSum2(new int[]{10, 1, 2, 7, 6, 1, 5}, 8));
     }
 
 }
