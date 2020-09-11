@@ -1340,8 +1340,39 @@ public class Solution {
         }
     }
 
+    public static List<List<Integer>> combinationSum3(int k, int n) {
+        List<List<Integer>> result = new ArrayList<>();
+        int candidates[] = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9};
+        //将数组进行排序，方便去除重复项
+        getResult3(result, new ArrayList<>(), candidates, k, n, 0);
+        //返回List中去掉重复项
+        return result.stream().distinct().collect(Collectors.toList());
+    }
+
+    private static void getResult3(List<List<Integer>> result, List<Integer> cur, int candidates[], int k, int target, int start) {
+        //当差等0，且所加数个数等于k时添加其元素
+        if (target == 0 && cur.size() == k) {
+            result.add(new ArrayList<>(cur));
+            return;
+        }
+        //当差等于零或者加数个数达到三个时，不需要再寻找加数，
+        else if (target == 0 || cur.size() >= k) {
+            return;
+        }
+        for (int i = start; i < candidates.length; i++) {
+            if (target < candidates[i])
+                continue;
+            //选择当前节点，类似于从当前节点开始往下遍历
+            cur.add(candidates[i]);
+            //i+1：不获取当前位置的数值，当前位置数值不在重复使用
+            getResult3(result, cur, candidates, k, target - candidates[i], i + 1);
+            //删除上一节点数值，重新进行添加计算是否等于target
+            cur.remove(cur.size() - 1);
+        }
+    }
+
     public static void main(String[] args) throws IOException {
-        System.out.println(combinationSum2(new int[]{10, 1, 2, 7, 6, 1, 5}, 8));
+        System.out.println(combinationSum3(3, 15));
     }
 
 }
