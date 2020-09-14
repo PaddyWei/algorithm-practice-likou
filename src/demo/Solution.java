@@ -1,6 +1,7 @@
 package demo;
 
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -123,7 +124,8 @@ public class Solution {
         return listNode.next;
     }
 
-    public static class TreeNode {
+    public static class
+    TreeNode {
         int val;
         TreeNode left;
         TreeNode right;
@@ -618,7 +620,7 @@ public class Solution {
 
         String[] parts = input.split(",");
         String item = parts[0];
-        int i = Integer.parseInt("null".equals(item) ? item : "0");
+        int i = Integer.parseInt(!"null".equals(item) ? item : "0");
         TreeNode root;
         if (i == 0) {
             root = new TreeNode();
@@ -1371,8 +1373,130 @@ public class Solution {
         }
     }
 
+    /**
+     * 利用队列先进先出的策略，BFS：广度优先搜索，按照层级进行队列添加，再根据每层进行平均值计算
+     **/
+    public static List<Double> averageOfLevels(TreeNode root) {
+        List<Double> result = new ArrayList<>();
+        //使用队列保存上一层节点，方便进行下一层的遍历；
+        //先进先出，确保上层节点一定比下层节点先遍历
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+
+        int size;
+        TreeNode temp;
+        Double sum;
+
+        //队列为空，说明上层所有节点都没有叶子节点，遍历完毕
+        while (!queue.isEmpty()) {
+            //重置sum，确保本次计算为当前层级的节点综合
+            sum = 0.0;
+            //重置size，确保本次for循环的是同一层的所有节点
+            size = queue.size();
+            for (int i = 1; i <= size; i++) {
+                //取当前队列中首个节点
+                temp = queue.poll();
+                sum += temp.val;
+                //把下一层的所有非空节点加入队列
+                if (null != temp.left) queue.offer(temp.left);
+                if (null != temp.right) queue.offer(temp.right);
+            }
+            result.add(sum / size);
+        }
+        return result;
+    }
+
+    public static List<Double> averageOfLevels2(TreeNode root) {
+        List<Double> result = new ArrayList<>();
+        Map<Integer, Integer> mapCount = new HashMap<>();
+        Map<Integer, Integer> mapSum = new HashMap<>();
+
+        dfs(root, 1, mapCount, mapSum);
+        Double sum;
+        int size = mapCount.size();
+        for (int i = 1; i <= size; i++) {
+            sum = Double.valueOf(mapSum.get(i) / mapCount.get(i));
+            NumberFormat nf = NumberFormat.getNumberInstance();
+            nf.setMaximumFractionDigits(2);
+            result.add(Double.valueOf(nf.format(sum)));
+        }
+        return result;
+    }
+
+    private static void dfs(TreeNode root, int count, Map<Integer, Integer> mapCount, Map<Integer, Integer> mapSum) {
+        if (root == null) {
+            return;
+        }
+        //判断是否层级首次进行计数操作
+        if (mapCount.containsKey(count)) {
+            mapCount.put(count, mapCount.get(count) + 1);
+        } else {
+            mapCount.put(count, 1);
+        }
+        //判断是否层级首次进行求和操作
+        if (mapSum.containsKey(count)) {
+            mapSum.put(count, mapSum.get(count) + root.val);
+        } else {
+            mapSum.put(count, root.val);
+        }
+
+        if (root.left != null) dfs(root.left, count + 1, mapCount, mapSum);
+        if (root.right != null) dfs(root.right, count + 1, mapCount, mapSum);
+    }
+
+    /**
+     * 给定一个二叉树，返回它的中序 遍历。
+     * 使用递归进行中序调用
+     * 二叉树遍历，根据前中后序，三种方式进行遍历
+     * 前：根左右
+     * 中：左根右
+     * 后：左右根
+     **/
+    public static List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> list = new ArrayList();
+        helper(list, root);
+        return list;
+    }
+
+    public static void helper(List<Integer> list, TreeNode root) {
+        //终止条件
+        if (root == null)
+            return;
+        //遍历当前节点的左子树
+        helper(list, root.left);
+        //把当前节点加入到集合中
+        list.add(root.val);
+        //遍历当前节点的右子树
+        helper(list, root.right);
+    }
+
+    /**
+     * 给定一个二叉树，返回它的中序 遍历。
+     * 使用栈原理进行先进后出的方式进行遍历
+     **/
+    public List<Integer> inorderTraversal2(TreeNode root) {
+        //list存储结果的
+        List<Integer> list = new ArrayList<>();
+        //栈存储结点的
+        Stack<TreeNode> stack = new Stack<>();
+        while (root != null || !stack.empty()) {
+            //找当前节点的左子节点，一直找下去，直到为空为止
+            while (root != null) {
+                stack.push(root);
+                root = root.left;
+            }
+            //出栈，这时候root就是最左子节点
+            root = stack.pop();
+            //然后把最左子节点加入到集合中
+            list.add(root.val);
+            //最后再访问他的右子节点
+            root = root.right;
+        }
+        return list;
+    }
+
     public static void main(String[] args) throws IOException {
-        System.out.println(combinationSum3(3, 15));
+        System.out.println(inorderTraversal(stringToTreeNode("[3,9,20,15,7]")));
     }
 
 }
