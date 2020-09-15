@@ -1495,8 +1495,96 @@ public class Solution {
         return list;
     }
 
+    private static int[] line = new int[9];
+    private static int[] column = new int[9];
+    private static int[][] block = new int[3][3];
+    private static boolean valid = false;
+    private static List<int[]> spaces = new ArrayList<int[]>();
+
+    /**
+     * 方法三：枚举优化
+     * 思路与算法
+     *
+     * 我们可以顺着方法二的思路继续优化下去：
+     *
+     * 如果一个空白格只有唯一的数可以填入，也就是其对应的 bb 值和 b-1b−1 进行按位与运算后得到 00（即 bb 中只有一个二进制位为 11）。此时，我们就可以确定这个空白格填入的数，而不用等到递归时再去处理它。
+     * 这样一来，我们可以不断地对整个数独进行遍历，将可以唯一确定的空白格全部填入对应的数。随后我们再使用与方法二相同的方法对剩余无法唯一确定的空白格进行递归 + 回溯。
+     *
+     **/
+    public static void solveSudoku(char[][] board) {
+        for (int i = 0; i < 9; ++i) {
+            for (int j = 0; j < 9; ++j) {
+                if (board[i][j] != '.') {
+                    int digit = board[i][j] - '0' - 1;
+                    flip(i, j, digit);
+                }
+            }
+        }
+
+        while (true) {
+            boolean modified = false;
+            for (int i = 0; i < 9; ++i) {
+                for (int j = 0; j < 9; ++j) {
+                    if (board[i][j] == '.') {
+                        int mask = ~(line[i] | column[j] | block[i / 3][j / 3]) & 0x1ff;
+                        if ((mask & (mask - 1)) == 0) {
+                            int digit = Integer.bitCount(mask - 1);
+                            flip(i, j, digit);
+                            board[i][j] = (char) (digit + '0' + 1);
+                            modified = true;
+                        }
+                    }
+                }
+            }
+            if (!modified) {
+                break;
+            }
+        }
+
+        for (int i = 0; i < 9; ++i) {
+            for (int j = 0; j < 9; ++j) {
+                if (board[i][j] == '.') {
+                    spaces.add(new int[]{i, j});
+                }
+            }
+        }
+
+        dfs(board, 0);
+    }
+
+    public static void dfs(char[][] board, int pos) {
+        if (pos == spaces.size()) {
+            valid = true;
+            return;
+        }
+
+        int[] space = spaces.get(pos);
+        int i = space[0], j = space[1];
+        int mask = ~(line[i] | column[j] | block[i / 3][j / 3]) & 0x1ff;
+        for (; mask != 0 && !valid; mask &= (mask - 1)) {
+            int digitMask = mask & (-mask);
+            int digit = Integer.bitCount(digitMask - 1);
+            flip(i, j, digit);
+            board[i][j] = (char) (digit + '0' + 1);
+            dfs(board, pos + 1);
+            flip(i, j, digit);
+        }
+    }
+
+    public static void flip(int i, int j, int digit) {
+        line[i] ^= (1 << digit);
+        column[j] ^= (1 << digit);
+        block[i / 3][j / 3] ^= (1 << digit);
+    }
+
     public static void main(String[] args) throws IOException {
-        System.out.println(inorderTraversal(stringToTreeNode("[3,9,20,15,7]")));
+        char[][] chars = {{'5', '3', '.', '.', '7', '.', '.', '.', '.'},{
+            '6', '.', '.', '1', '9', '5', '.', '.', '.'},{'.', '9', '8', '.', '.', '.', '.', '6', '.'},{
+            '8', '.', '.', '.', '6', '.', '.', '.', '3'},{'4', '.', '.', '8', '.', '3', '.', '.', '1'},{
+            '7', '.', '.', '.', '2', '.', '.', '.', '6'},{'.', '6', '.', '.', '.', '.', '2', '8', '.'},{
+            '.', '.', '.', '4', '1', '9', '.', '.', '5'},{'.', '.', '.', '.', '8', '.', '.', '7', '9'}};
+        solveSudoku(chars);
+        System.out.println();
     }
 
 }
