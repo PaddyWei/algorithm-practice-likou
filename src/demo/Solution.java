@@ -1577,13 +1577,63 @@ public class Solution {
         block[i / 3][j / 3] ^= (1 << digit);
     }
 
+    /**
+     * 翻转二叉树，递归调用方式
+     */
+    public TreeNode invertTree(TreeNode root) {
+        if (root == null) return root;
+        TreeNode treeNode;
+        treeNode = root.left;
+        root.left = root.right;
+        root.right = treeNode;
+        if (root.left != null) invertTree(root.left);
+        if (root.right != null) invertTree(root.right);
+        return root;
+    }
+
+    /**
+     * DFS 栈
+     */
+    public TreeNode invertTree2(TreeNode root) {
+        Stack<TreeNode> stack = new Stack<>();
+        stack.push(root);
+        while (!stack.isEmpty()) {
+            TreeNode cur = stack.pop();
+            if (cur == null) {
+                continue;
+            }
+            TreeNode temp = cur.left;
+            cur.left = cur.right;
+            cur.right = temp;
+
+            stack.push(cur.right);
+            stack.push(cur.left);
+        }
+        return root;
+    }
+
+    /**
+     * BFS 队列
+     */
+    public TreeNode invertTree3(TreeNode root) {
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            TreeNode cur = queue.poll();
+            if (cur == null) {
+                continue;
+            }
+            TreeNode temp = cur.left;
+            cur.left = cur.right;
+            cur.right = temp;
+
+            queue.offer(cur.left);
+            queue.offer(cur.right);
+        }
+        return root;
+    }
+
     public static void main(String[] args) throws IOException {
-        char[][] chars = {{'5', '3', '.', '.', '7', '.', '.', '.', '.'},{
-            '6', '.', '.', '1', '9', '5', '.', '.', '.'},{'.', '9', '8', '.', '.', '.', '.', '6', '.'},{
-            '8', '.', '.', '.', '6', '.', '.', '.', '3'},{'4', '.', '.', '8', '.', '3', '.', '.', '1'},{
-            '7', '.', '.', '.', '2', '.', '.', '.', '6'},{'.', '6', '.', '.', '.', '.', '2', '8', '.'},{
-            '.', '.', '.', '4', '1', '9', '.', '.', '5'},{'.', '.', '.', '.', '8', '.', '.', '7', '9'}};
-        solveSudoku(chars);
         System.out.println();
     }
 
