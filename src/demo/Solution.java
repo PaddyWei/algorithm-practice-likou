@@ -1633,6 +1633,70 @@ public class Solution {
         return root;
     }
 
+    int[] result = new int[2];
+    int doubleRoot = 0;
+    int[] hadRoot;
+    int[][] rootResult = new int[2][2];
+
+    /**
+     * 冗余连接 II
+     **/
+    public int[] findRedundantDirectedConnection(int[][] edges) {
+        hadRoot = new int[edges.length + 1];
+        int[] father = new int[edges.length + 1];
+        for (int i = 0; i < father.length; i++) {
+            father[i] = i;
+        }
+
+        for (int[] edge : edges) {
+            hadRoot[edge[1]]++;
+            if (hadRoot[edge[1]] == 2) {
+                doubleRoot = edge[1];
+                rootResult[1] = edge;
+            } else {
+                union(father, edge[1], edge[0]);
+            }
+        }
+        if (doubleRoot != 0) {
+            for (int[] edge : edges) {
+                if (edge[1] == doubleRoot) {
+                    rootResult[0] = edge;
+                    break;
+                }
+            }
+            int root = 0;
+            for (int i = 1; i < father.length; i++) {
+                if (root == 0) {
+                    root = findXFather(father,i);
+                }
+                if (root != findXFather(father,i)) {
+                    return rootResult[0];
+                }
+            }
+            return rootResult[1];
+        }
+        return result;
+    }
+
+    public int findXFather(int[] father, int x) {
+        while (father[x] != x) {
+            father[x] = father[father[x]];
+            x = father[x];
+        }
+        return x;
+    }
+
+    public void union(int[] father, int x, int y) {
+        int xFather = findXFather(father, x);
+        int yFather = findXFather(father, y);
+        if (xFather != yFather) {
+            father[xFather] = yFather;
+        } else {
+            result[0] = y;
+            result[1] = x;
+        }
+    }
+
     public static void main(String[] args) throws IOException {
         System.out.println();
     }
