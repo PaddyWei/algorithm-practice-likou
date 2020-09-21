@@ -1504,12 +1504,11 @@ public class Solution {
     /**
      * 方法三：枚举优化
      * 思路与算法
-     *
+     * <p>
      * 我们可以顺着方法二的思路继续优化下去：
-     *
+     * <p>
      * 如果一个空白格只有唯一的数可以填入，也就是其对应的 bb 值和 b-1b−1 进行按位与运算后得到 00（即 bb 中只有一个二进制位为 11）。此时，我们就可以确定这个空白格填入的数，而不用等到递归时再去处理它。
      * 这样一来，我们可以不断地对整个数独进行遍历，将可以唯一确定的空白格全部填入对应的数。随后我们再使用与方法二相同的方法对剩余无法唯一确定的空白格进行递归 + 回溯。
-     *
      **/
     public static void solveSudoku(char[][] board) {
         for (int i = 0; i < 9; ++i) {
@@ -1667,9 +1666,9 @@ public class Solution {
             int root = 0;
             for (int i = 1; i < father.length; i++) {
                 if (root == 0) {
-                    root = findXFather(father,i);
+                    root = findXFather(father, i);
                 }
-                if (root != findXFather(father,i)) {
+                if (root != findXFather(father, i)) {
                     return rootResult[0];
                 }
             }
@@ -1748,8 +1747,61 @@ public class Solution {
         }
     }
 
+    // 中序遍历，将右侧大数相加累加至左侧，因二叉树特性，右侧节点所有数大于必然大于左侧节点所有数
+    int sum = 0;
+
+    public TreeNode convertBST(TreeNode root) {
+        if (root != null) {
+            convertBST(root.right);
+            sum += root.val;
+            root.val = sum;
+            convertBST(root.left);
+        }
+        return root;
+    }
+
+    public static boolean exist(char[][] board, String word) {
+        if (board.length == 0 || word.length() == 0) {
+            return true;
+        }
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                if (board[i][j] == word.charAt(0)) {
+                    if (seek(board, word, 0, i, j)) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private static boolean seek(char[][] board, String word, int i, int x, int y) {
+        //如果，字符串全部验证完毕，则完成寻找，返回true
+        if (i == word.length()) {
+            return true;
+        }
+        //如果，x，y超出边界，说明无路可走，返回false；
+        if (x < 0 || y < 0 || x >= board.length || y >= board[x].length || board[x][y] != word.charAt(i)) {
+            return false;
+        }
+        //如果，x，y坐标上的字符与word上的对应，则继续向下寻找i++
+        i++;
+        //记录当前坐标，并修改为'.'，防止重复使用
+        char c = board[x][y];
+        board[x][y] = '.';
+        boolean b = seek(board, word, i, x, y - 1)
+                || seek(board, word, i, x, y + 1)
+                || seek(board, word, i, x - 1, y)
+                || seek(board, word, i, x + 1, y);
+        //递归结束，还原坐标原字符，防止重新使用
+        board[x][y] = c;
+        return b;
+    }
+
     public static void main(String[] args) throws IOException {
-        System.out.println(permuteUnique(new int[]{1,2,3}));
+        System.out.println(exist(new char[][]{{'A', 'B', 'C', 'E'}, {'S', 'F', 'C', 'S'}, {'A', 'D', 'E', 'E'}}, "SEE"));
     }
 
 }
