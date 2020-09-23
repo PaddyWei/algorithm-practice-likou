@@ -1804,32 +1804,87 @@ public class Solution {
      * 监控二叉树
      */
     int resultNum = 0;
+
     public int minCameraCover(TreeNode root) {
-        if(dfs(root)==1){
+        if (dfs(root) == 1) {
             resultNum++;
         }
         return resultNum;
     }
+
     //0:可被观测但无监控，上一层节点为1
     //1：不可被观测到，上一层节点为2
     //2：有摄像机，上一层节点为0
-    private int dfs(TreeNode root){
-        if(root==null){
+    private int dfs(TreeNode root) {
+        if (root == null) {
             return 0;
         }
-        int leftStatus = dfs(root.left),rightStatus = dfs(root.right);
-        if(leftStatus==1||rightStatus==1){
+        int leftStatus = dfs(root.left), rightStatus = dfs(root.right);
+        if (leftStatus == 1 || rightStatus == 1) {
             resultNum++;
             return 2;
-        }else if(leftStatus==2||rightStatus==2){
+        } else if (leftStatus == 2 || rightStatus == 2) {
             return 0;
-        }else{
+        } else {
             return 1;
         }
     }
 
+
+    /**
+     * 方法一 ：合并二叉树
+     * 新建二叉树t，将t1和t2合并到t上
+     *
+     * @param t1
+     * @param t2
+     */
+    static TreeNode t = new TreeNode();
+
+    public static TreeNode mergeTrees(TreeNode t1, TreeNode t2) {
+        if (t1 == null) {
+            return t2;
+        } else if (t2 == null) {
+            return t1;
+        }
+        dfs(t, t1, t2);
+        return t;
+    }
+
+    private static void dfs(TreeNode t, TreeNode t1, TreeNode t2) {
+        t.val = ((t1 == null) ? 0 : t1.val) + ((t2 == null) ? 0 : t2.val);
+        if ((t1 != null && t1.left != null) || (t2 != null && t2.left != null)) {
+            t.left = new TreeNode();
+            dfs(t.left, t1 == null ? null : t1.left, t2 == null ? null : t2.left);
+        }
+        if ((t1 != null && t1.right != null) || (t2 != null && t2.right != null)) {
+            t.right = new TreeNode();
+            dfs(t.right, t1 == null ? null : t1.right, t2 == null ? null : t2.right);
+        }
+    }
+
+    /**
+     * 方法二 ：合并二叉树
+     * 以t1为主干，将t2合并到t1的对应位置
+     *
+     * @param t1
+     * @param t2
+     * @return
+     */
+    public static TreeNode mergeTrees2(TreeNode t1, TreeNode t2) {
+        if (t1 == null) {
+            return t2;
+        } else if (t2 == null) {
+            return t1;
+        }
+        t1.left = mergeTrees2(t1.left, t2.left);
+        t2.right = mergeTrees2(t1.right, t2.right);
+        t1.val += t2.val;
+        return t1;
+    }
+
     public static void main(String[] args) throws IOException {
-        System.out.println(exist(new char[][]{{'A', 'B', 'C', 'E'}, {'S', 'F', 'C', 'S'}, {'A', 'D', 'E', 'E'}}, "SEE"));
+        System.out.println(mergeTrees(new TreeNode(1),
+                new TreeNode(1, new TreeNode(2), null)));
     }
 
 }
