@@ -1883,7 +1883,7 @@ public class Solution {
     }
 
     private TreeNode pre = null;    // 前驱节点
-//    private int[] result;   // 结果数组
+    //    private int[] result;   // 结果数组
     private int resultCount = 0;    // 结果个数
     private int maxCount = 0;   // 众数数量
     private int currCount = 0;  // 当前重复的数的数量
@@ -1901,7 +1901,6 @@ public class Solution {
 
     /**
      * 中根序 遍历 目标二叉树<br/>
-     *
      */
     private void findAndFill(TreeNode root) {
         if (root == null) {
@@ -1928,6 +1927,44 @@ public class Solution {
         // 进行下轮遍历
         this.pre = root;
         findAndFill(root.right);    // 递归遍历 右子树
+    }
+
+    Map<Integer, Integer> buildTreeMap = new HashMap<>();
+
+    public TreeNode buildTree(int[] inorder, int[] postorder) {
+        //为了和105、889题目结构一致都利用HashMap方便查找节点位置（索引）
+        //我们利用中序来区分左右子数
+        for (int i = 0; i < inorder.length; i++) {
+            buildTreeMap.put(inorder[i], i);
+        }
+        return helper(inorder, postorder, 0, inorder.length - 1, 0, postorder.length - 1);
+    }
+
+    private TreeNode helper(int[] in, int[] post, int inL, int inR, int postL, int postR) {
+        if (inL > inR)  //说明数组无效
+            return null;
+
+        TreeNode root = new TreeNode(post[postR]);//利用后序的最后一个节点创建新的树的根节点
+        int postRootVal = post[postR];    //后序遍历的最后一个节点post_last_node
+        int inMid = buildTreeMap.get(postRootVal); //后序遍历节点post_last_node在中序遍历中的位置（利用map直接以O(1)的复杂度取出索引）
+        int inLeftNum = inMid - inL;        //中序遍历的左子树的个数
+        /*
+            中序左子树的范围说明:
+                从中序第一个节点开始，到后序遍历的最后一个节点在中序遍历位置的前一个节点结束 inL,inMid-1
+            中序右子树的范围说明:
+                从后序遍历的最后一个节点在中序遍历位置的后一个节点开始，到中序的最后一个位置结束 inMid+1,inR
+            后序左子树的范围说明:
+                从后序的第一个的节点开始，到第一个节点+左子树的个数-1结束 postL,postL+inLeftNum-1
+            后序右子树的范围说明:
+                从后序的第一个节点+左子树的个数开始，到到后序的最后一个位置-1结束 postL+inLeftNum,postR-1
+
+            中序左子树的范围[inL,inMid-1] 后序左子树的范围[postL,postL+inLeftNum-1]
+            中序右子树的范围[inMid+1,inR] 后序右子树的范围[postL+inLeftNum,postR-1]
+        */
+
+        root.left = helper(in, post, inL, inMid - 1, postL, postL + inLeftNum - 1);//递归构建左子树
+        root.right = helper(in, post, inMid + 1, inR, postL + inLeftNum, postR - 1);//递归构建右子树
+        return root;
     }
 
     public static void main(String[] args) throws IOException {
