@@ -1967,6 +1967,27 @@ public class Solution {
         return root;
     }
 
+    /**
+     * 二叉搜索树的最近公共祖先
+     * 根据二叉树左小右大规则，判断两个数是左节点还是右节点
+     * 如果两个节点分开左右节点，必然是该节点为最近父节点
+     * @param root
+     * @param p
+     * @param q
+     * @return
+     */
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        while (true) {
+            if (p.val < root.val && q.val < root.val) {
+                root = root.left;
+            } else if (p.val > root.val && q.val > root.val) {
+                root = root.right;
+            } else {
+                return root;
+            }
+        }
+    }
+
     public static void main(String[] args) throws IOException {
         System.out.println(mergeTrees(new TreeNode(1),
                 new TreeNode(1, new TreeNode(2), null)));
