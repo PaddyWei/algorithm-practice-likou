@@ -49,55 +49,28 @@ public class Solution {
         return list;
     }
 
-    public static class ListNode {
-
-        int val;
-
-        ListNode next;
-
-        ListNode() {
-        }
-
-        ListNode(int x) {
-            val = x;
-        }
-
-        ListNode(int val, ListNode next) {
-            this.val = val;
-            this.next = next;
-        }
-
-        @Override
-        public String toString() {
-            return "ListNode{" +
-                    "val=" + val +
-                    ", next=" + next +
-                    '}';
-        }
-    }
-
     public static ListNode addTwoNumbers(ListNode l1, ListNode l2) {
         ListNode listNode = new ListNode(0);
         ListNode newNode = listNode;
         int decade = 0;
         while (l1 != null || l2 != null) {
-            int x = l1 != null ? l1.val : 0;
-            int y = l2 != null ? l2.val : 0;
+            int x = l1 != null ? l1.getVal() : 0;
+            int y = l2 != null ? l2.getVal() : 0;
             int sum = decade + x + y;
-            newNode.next = new ListNode(sum % 10);
-            newNode = newNode.next;
+            newNode.setNext(new ListNode(sum % 10));
+            newNode = newNode.getNext();
             decade = sum / 10;
             if (l1 != null) {
-                l1 = l1.next;
+                l1 = l1.getNext();
             }
             if (l2 != null) {
-                l2 = l2.next;
+                l2 = l2.getNext();
             }
         }
         if (decade > 0) {
-            newNode.next = new ListNode(decade);
+            newNode.setNext(new ListNode(decade));
         }
-        return listNode.next;
+        return listNode.getNext();
     }
 
     public static ListNode addTwoNumbersV2(ListNode l1, ListNode l2) {
@@ -105,43 +78,23 @@ public class Solution {
         ListNode newNode = listNode;
         int decade = 0;
         while (l1 != null || l2 != null) {
-            int x = l1 != null ? l1.val : 0;
-            int y = l2 != null ? l2.val : 0;
+            int x = l1 != null ? l1.getVal() : 0;
+            int y = l2 != null ? l2.getVal() : 0;
             int sum = decade + x + y;
-            newNode.next = new ListNode(sum % 10);
-            newNode = newNode.next;
+            newNode.setNext(new ListNode(sum % 10));
+            newNode = newNode.getNext();
             decade = sum / 10;
             if (l1 != null) {
-                l1 = l1.next;
+                l1 = l1.getNext();
             }
             if (l2 != null) {
-                l2 = l2.next;
+                l2 = l2.getNext();
             }
         }
         if (decade > 0) {
-            newNode.next = new ListNode(decade);
+            newNode.setNext(new ListNode(decade));
         }
-        return listNode.next;
-    }
-
-    public static class
-    TreeNode {
-        int val;
-        TreeNode left;
-        TreeNode right;
-
-        TreeNode() {
-        }
-
-        TreeNode(int val) {
-            this.val = val;
-        }
-
-        TreeNode(int val, TreeNode left, TreeNode right) {
-            this.val = val;
-            this.left = left;
-            this.right = right;
-        }
+        return listNode.getNext();
     }
 
     public static boolean isSameTree(TreeNode p, TreeNode q) {
@@ -149,10 +102,10 @@ public class Solution {
             return true;
         } else if (p == null || q == null) {
             return false;
-        } else if (p.val != q.val) {
+        } else if (p.getVal() != q.getVal()) {
             return false;
         }
-        return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
+        return isSameTree(p.getLeft(), q.getLeft()) && isSameTree(p.getRight(), q.getRight());
     }
 
     public static int lengthOfLongestSubstring(String s) {
@@ -314,26 +267,6 @@ public class Solution {
         System.out.println("##########################################    ############");
     }
 
-    class Node {
-        public int val;
-        public List<Node> neighbors;
-
-        public Node() {
-            val = 0;
-            neighbors = new ArrayList<Node>();
-        }
-
-        public Node(int _val) {
-            val = _val;
-            neighbors = new ArrayList<Node>();
-        }
-
-        public Node(int _val, ArrayList<Node> _neighbors) {
-            val = _val;
-            neighbors = _neighbors;
-        }
-    }
-
     public Node cloneGraph(Node node) {
         if (node == null) {
             return node;
@@ -367,21 +300,6 @@ public class Solution {
         return visited.get(node);
     }
 
-    public static int[] stringToIntegerArray(String input) {
-        input = input.trim();
-        input = input.substring(1, input.length() - 1);
-        if (input.length() == 0) {
-            return new int[0];
-        }
-
-        String[] parts = input.split(",");
-        int[] output = new int[parts.length];
-        for (int index = 0; index < parts.length; index++) {
-            String part = parts[index].trim();
-            output[index] = Integer.parseInt(part);
-        }
-        return output;
-    }
 
     public static int[][] stringToInt2dArray(String input) {
 //        JsonArray jsonArray = JsonArray.readFrom(input);
@@ -395,29 +313,6 @@ public class Solution {
 //            arr[i] = stringToIntegerArray(cols.toString());
 //        }
         return null;
-    }
-
-    public static String treeNodeToString(TreeNode root) {
-        if (root == null) {
-            return "[]";
-        }
-
-        String output = "";
-        Queue<TreeNode> nodeQueue = new LinkedList<>();
-        nodeQueue.add(root);
-        while (!nodeQueue.isEmpty()) {
-            TreeNode node = nodeQueue.remove();
-
-            if (node == null) {
-                output += "null, ";
-                continue;
-            }
-
-            output += String.valueOf(node.val) + ", ";
-            nodeQueue.add(node.left);
-            nodeQueue.add(node.right);
-        }
-        return "[" + output.substring(0, output.length() - 2) + "]";
     }
 
     public static String longestPalindrome(String s) {
@@ -474,8 +369,8 @@ public class Solution {
             ListNode listNode = new ListNode(0);
             ListNode newNode = listNode;
             while (k > 0) {
-                newNode.next = new ListNode(0);
-                newNode = newNode.next;
+                newNode.setNext(new ListNode(0));
+                newNode = newNode.getNext();
                 k--;
             }
             while (true) {
@@ -487,15 +382,15 @@ public class Solution {
                     num22 = Integer.valueOf(stringBuffer1.substring(i, i + 1));
                 }
                 num33 = num11 * num22 + s;
-                newNode.next = new ListNode(num33 % 10);
-                newNode = newNode.next;
+                newNode.setNext(new ListNode(num33 % 10));
+                newNode = newNode.getNext();
                 s = num33 / 10;
                 j++;
                 if (s == 0 && j >= stringBuffer2.length()) {
                     break;
                 }
             }
-            list.add(listNode.next);
+            list.add(listNode.getNext());
         }
         ListNode listNode = list.get(0);
         for (int n = 1; n < list.size(); n++) {
@@ -503,8 +398,8 @@ public class Solution {
         }
         String num = "";
         while (listNode != null) {
-            num += listNode.val;
-            listNode = listNode.next;
+            num += listNode.getNext();
+            listNode = listNode.getNext();
         }
         return new StringBuffer(num).reverse().toString();
     }
@@ -557,21 +452,21 @@ public class Solution {
         ListNode listNode = new ListNode();
         ListNode newNode = listNode;
         while (l1 != null || l2 != null) {
-            int x = l1 != null ? l1.val : Integer.MAX_VALUE;
-            int y = l2 != null ? l2.val : Integer.MAX_VALUE;
+            int x = l1 != null ? l1.getVal() : Integer.MAX_VALUE;
+            int y = l2 != null ? l2.getVal() : Integer.MAX_VALUE;
             if (x < y) {
-                newNode.next = new ListNode(x);
-                newNode = newNode.next;
+                newNode.setNext(new ListNode(x));
+                newNode = newNode.getNext();
 
 
-                l1 = l1.next;
+                l1 = l1.getNext();
             } else {
-                newNode.next = new ListNode(y);
-                newNode = newNode.next;
-                l2 = l2.next;
+                newNode.setNext(new ListNode(y));
+                newNode = newNode.getNext();
+                l2 = l2.getNext();
             }
         }
-        return listNode.next;
+        return listNode.getNext();
     }
 
     public static List<List<Integer>> threeSum(int[] nums) {
@@ -601,72 +496,23 @@ public class Solution {
         if (root == null) {
             return true;
         }
-        return Math.abs(height(root.left) - height(root.right)) <= 1 && isBalanced(root.left) && isBalanced(root.right);
+        return Math.abs(height(root.getLeft()) - height(root.getRight())) <= 1 && isBalanced(root.getLeft()) && isBalanced(root.getRight());
     }
 
     private static int height(TreeNode root) {
         if (root == null) {
             return 0;
         }
-        return Math.max(height(root.left), height(root.right)) + 1;
+        return Math.max(height(root.getLeft()), height(root.getRight())) + 1;
     }
 
-    public static TreeNode stringToTreeNode(String input) {
-        input = input.trim();
-        input = input.substring(1, input.length() - 1);
-        if (input.length() == 0) {
-            return null;
-        }
-
-        String[] parts = input.split(",");
-        String item = parts[0];
-        int i = Integer.parseInt(!"null".equals(item) ? item : "0");
-        TreeNode root;
-        if (i == 0) {
-            root = new TreeNode();
-        } else {
-            root = new TreeNode(i);
-        }
-        Queue<TreeNode> nodeQueue = new LinkedList<>();
-        nodeQueue.add(root);
-
-        int index = 1;
-        while (!nodeQueue.isEmpty()) {
-            TreeNode node = nodeQueue.remove();
-
-            if (index == parts.length) {
-                break;
-            }
-
-            item = parts[index++];
-            item = item.trim();
-            if (!item.equals("null")) {
-                int leftNumber = Integer.parseInt(item);
-                node.left = new TreeNode(leftNumber);
-                nodeQueue.add(node.left);
-            }
-
-            if (index == parts.length) {
-                break;
-            }
-
-            item = parts[index++];
-            item = item.trim();
-            if (!item.equals("null")) {
-                int rightNumber = Integer.parseInt(item);
-                node.right = new TreeNode(rightNumber);
-                nodeQueue.add(node.right);
-            }
-        }
-        return root;
-    }
 
     public TreeNode sortedListToBST(ListNode head) {
         List<ListNode> list = new ArrayList<>();
         ListNode listNode = head;
         while (listNode != null) {
             list.add(listNode);
-            listNode = listNode.next;
+            listNode = listNode.getNext();
         }
         return middle(list);
     }
@@ -676,12 +522,12 @@ public class Solution {
             return null;
         }
         if (list.size() == 1) {
-            return new TreeNode(list.get(0).val);
+            return new TreeNode(list.get(0).getVal());
         }
         int len = list.size();
-        TreeNode treeNode = new TreeNode(list.get(len / 2).val);
-        treeNode.left = middle(list.subList(0, len / 2));
-        treeNode.right = middle(list.subList(len / 2 + 1, len));
+        TreeNode treeNode = new TreeNode(list.get(len / 2).getVal());
+        treeNode.setLeft(middle(list.subList(0, len / 2)));
+        treeNode.setRight(middle(list.subList(len / 2 + 1, len)));
         return treeNode;
     }
 
@@ -768,14 +614,14 @@ public class Solution {
         if (root == null) return 0;
         //这道题递归条件里分为三种情况
         //1.左孩子和有孩子都为空的情况，说明到达了叶子节点，直接返回1即可
-        if (root.left == null && root.right == null) {
+        if (root.getLeft() == null && root.getRight() == null) {
             return 1;
         }
         //2.如果左孩子和由孩子其中一个为空，那么需要返回比较大的那个孩子的深度
-        int m1 = minDepth(root.left);
-        int m2 = minDepth(root.right);
+        int m1 = minDepth(root.getLeft());
+        int m2 = minDepth(root.getRight());
         //这里其中一个节点为空，说明m1和m2有一个必然为0，所以可以返回m1 + m2 + 1;
-        if (root.left == null || root.right == null) {
+        if (root.getLeft() == null || root.getRight() == null) {
             return m1 + m2 + 1;
         }
 
@@ -1188,13 +1034,13 @@ public class Solution {
     public static void dfs(TreeNode root, String paths) {
         if (root != null) {
             StringBuffer stringBuffer = new StringBuffer(paths);
-            stringBuffer.append(root.val);
-            if (root.left == null && root.right == null) {
+            stringBuffer.append(root.getVal());
+            if (root.getLeft() == null && root.getRight() == null) {
                 list.add(stringBuffer.toString());
             } else {
                 stringBuffer.append("->");
-                dfs(root.left, stringBuffer.toString());
-                dfs(root.right, stringBuffer.toString());
+                dfs(root.getLeft(), stringBuffer.toString());
+                dfs(root.getRight(), stringBuffer.toString());
             }
         }
     }
@@ -1396,10 +1242,10 @@ public class Solution {
             for (int i = 1; i <= size; i++) {
                 //取当前队列中首个节点
                 temp = queue.poll();
-                sum += temp.val;
+                sum += temp.getVal();
                 //把下一层的所有非空节点加入队列
-                if (null != temp.left) queue.offer(temp.left);
-                if (null != temp.right) queue.offer(temp.right);
+                if (null != temp.getLeft()) queue.offer(temp.getLeft());
+                if (null != temp.getRight()) queue.offer(temp.getRight());
             }
             result.add(sum / size);
         }
@@ -1435,13 +1281,13 @@ public class Solution {
         }
         //判断是否层级首次进行求和操作
         if (mapSum.containsKey(count)) {
-            mapSum.put(count, mapSum.get(count) + root.val);
+            mapSum.put(count, mapSum.get(count) + root.getVal());
         } else {
-            mapSum.put(count, root.val);
+            mapSum.put(count, root.getVal());
         }
 
-        if (root.left != null) dfs(root.left, count + 1, mapCount, mapSum);
-        if (root.right != null) dfs(root.right, count + 1, mapCount, mapSum);
+        if (root.getLeft() != null) dfs(root.getLeft(), count + 1, mapCount, mapSum);
+        if (root.getRight() != null) dfs(root.getRight(), count + 1, mapCount, mapSum);
     }
 
     /**
@@ -1463,11 +1309,11 @@ public class Solution {
         if (root == null)
             return;
         //遍历当前节点的左子树
-        helper(list, root.left);
+        helper(list, root.getLeft());
         //把当前节点加入到集合中
-        list.add(root.val);
+        list.add(root.getVal());
         //遍历当前节点的右子树
-        helper(list, root.right);
+        helper(list, root.getRight());
     }
 
     /**
@@ -1483,14 +1329,14 @@ public class Solution {
             //找当前节点的左子节点，一直找下去，直到为空为止
             while (root != null) {
                 stack.push(root);
-                root = root.left;
+                root = root.getLeft();
             }
             //出栈，这时候root就是最左子节点
             root = stack.pop();
             //然后把最左子节点加入到集合中
-            list.add(root.val);
+            list.add(root.getVal());
             //最后再访问他的右子节点
-            root = root.right;
+            root = root.getRight();
         }
         return list;
     }
@@ -1582,11 +1428,11 @@ public class Solution {
     public TreeNode invertTree(TreeNode root) {
         if (root == null) return root;
         TreeNode treeNode;
-        treeNode = root.left;
-        root.left = root.right;
-        root.right = treeNode;
-        if (root.left != null) invertTree(root.left);
-        if (root.right != null) invertTree(root.right);
+        treeNode = root.getLeft();
+        root.setLeft(root.getRight());
+        root.setRight(treeNode);
+        if (root.getLeft() != null) invertTree(root.getLeft());
+        if (root.getRight() != null) invertTree(root.getRight());
         return root;
     }
 
@@ -1601,12 +1447,12 @@ public class Solution {
             if (cur == null) {
                 continue;
             }
-            TreeNode temp = cur.left;
-            cur.left = cur.right;
-            cur.right = temp;
+            TreeNode temp = cur.getLeft();
+            cur.setLeft(cur.getRight());
+            cur.setRight(temp);
 
-            stack.push(cur.right);
-            stack.push(cur.left);
+            stack.push(cur.getRight());
+            stack.push(cur.getLeft());
         }
         return root;
     }
@@ -1622,12 +1468,12 @@ public class Solution {
             if (cur == null) {
                 continue;
             }
-            TreeNode temp = cur.left;
-            cur.left = cur.right;
-            cur.right = temp;
+            TreeNode temp = cur.getLeft();
+            cur.setLeft(cur.getRight());
+            cur.setRight(temp);
 
-            queue.offer(cur.left);
-            queue.offer(cur.right);
+            queue.offer(cur.getLeft());
+            queue.offer(cur.getRight());
         }
         return root;
     }
@@ -1752,10 +1598,10 @@ public class Solution {
 
     public TreeNode convertBST(TreeNode root) {
         if (root != null) {
-            convertBST(root.right);
-            sum += root.val;
-            root.val = sum;
-            convertBST(root.left);
+            convertBST(root.getRight());
+            sum += root.getVal();
+            root.setVal(sum);
+            convertBST(root.getLeft());
         }
         return root;
     }
@@ -1819,7 +1665,7 @@ public class Solution {
         if (root == null) {
             return 0;
         }
-        int leftStatus = dfs(root.left), rightStatus = dfs(root.right);
+        int leftStatus = dfs(root.getLeft()), rightStatus = dfs(root.getRight());
         if (leftStatus == 1 || rightStatus == 1) {
             resultNum++;
             return 2;
@@ -1851,14 +1697,14 @@ public class Solution {
     }
 
     private static void dfs(TreeNode t, TreeNode t1, TreeNode t2) {
-        t.val = ((t1 == null) ? 0 : t1.val) + ((t2 == null) ? 0 : t2.val);
-        if ((t1 != null && t1.left != null) || (t2 != null && t2.left != null)) {
-            t.left = new TreeNode();
-            dfs(t.left, t1 == null ? null : t1.left, t2 == null ? null : t2.left);
+        t.setVal(((t1 == null) ? 0 : t1.getVal()) + ((t2 == null) ? 0 : t2.getVal()));
+        if ((t1 != null && t1.getLeft() != null) || (t2 != null && t2.getLeft() != null)) {
+            t.setLeft(new TreeNode());
+            dfs(t.getLeft(), t1 == null ? null : t1.getLeft(), t2 == null ? null : t2.getLeft());
         }
-        if ((t1 != null && t1.right != null) || (t2 != null && t2.right != null)) {
-            t.right = new TreeNode();
-            dfs(t.right, t1 == null ? null : t1.right, t2 == null ? null : t2.right);
+        if ((t1 != null && t1.getRight() != null) || (t2 != null && t2.getRight() != null)) {
+            t.setRight(new TreeNode());
+            dfs(t.getRight(), t1 == null ? null : t1.getRight(), t2 == null ? null : t2.getRight());
         }
     }
 
@@ -1876,9 +1722,9 @@ public class Solution {
         } else if (t2 == null) {
             return t1;
         }
-        t1.left = mergeTrees2(t1.left, t2.left);
-        t2.right = mergeTrees2(t1.right, t2.right);
-        t1.val += t2.val;
+        t1.setLeft(mergeTrees2(t1.getLeft(), t2.getLeft()));
+        t2.setRight(mergeTrees2(t1.getRight(), t2.getRight()));
+        t1.setVal(t1.getVal() + t2.getVal());
         return t1;
     }
 
@@ -1907,8 +1753,8 @@ public class Solution {
             return;
         }
 
-        findAndFill(root.left); // 递归遍历 左子树
-        if (this.pre != null && this.pre.val == root.val) { // 与前一个节点的值相等
+        findAndFill(root.getLeft()); // 递归遍历 左子树
+        if (this.pre != null && this.pre.getVal() == root.getVal()) { // 与前一个节点的值相等
             this.currCount++;
         } else {
             this.currCount = 1;  // 若 不相等，则 刷新currCount
@@ -1919,14 +1765,14 @@ public class Solution {
             this.resultCount = 1;
         } else if (this.currCount == this.maxCount) {   // 当前最大数 == 最大众数数
             if (this.result != null) {
-                this.result[this.resultCount] = root.val;
+                this.result[this.resultCount] = root.getVal();
             }
             this.resultCount++;  // 使 指针向后移动，便于下次录入
         }
 
         // 进行下轮遍历
         this.pre = root;
-        findAndFill(root.right);    // 递归遍历 右子树
+        findAndFill(root.getRight());    // 递归遍历 右子树
     }
 
     Map<Integer, Integer> buildTreeMap = new HashMap<>();
@@ -1962,8 +1808,8 @@ public class Solution {
             中序右子树的范围[inMid+1,inR] 后序右子树的范围[postL+inLeftNum,postR-1]
         */
 
-        root.left = helper(in, post, inL, inMid - 1, postL, postL + inLeftNum - 1);//递归构建左子树
-        root.right = helper(in, post, inMid + 1, inR, postL + inLeftNum, postR - 1);//递归构建右子树
+        root.setLeft(helper(in, post, inL, inMid - 1, postL, postL + inLeftNum - 1));//递归构建左子树
+        root.setRight(helper(in, post, inMid + 1, inR, postL + inLeftNum, postR - 1));//递归构建右子树
         return root;
     }
 
@@ -1979,10 +1825,10 @@ public class Solution {
      */
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
         while (true) {
-            if (p.val < root.val && q.val < root.val) {
-                root = root.left;
-            } else if (p.val > root.val && q.val > root.val) {
-                root = root.right;
+            if (p.getVal() < root.getVal() && q.getVal() < root.getVal()) {
+                root = root.getLeft();
+            } else if (p.getVal() > root.getVal() && q.getVal() > root.getVal()) {
+                root = root.getRight();
             } else {
                 return root;
             }
@@ -2004,27 +1850,28 @@ public class Solution {
         if (root == null)
             return;
         //将需要计算数值先加入集合list
-        list.add(root.val);
+        list.add(root.getVal());
         //如果剩余为0，将集合list加入总集合lists中，返回并删除集合list中的自己
-        if (surplus - root.val == 0) {
+        if (surplus - root.getVal() == 0) {
             lists.add(new ArrayList<>(list));
             list.remove(list.size() - 1);
             return;
         }
         //如果剩余值小于0，说明计算不合适，并且自己的子节点为null，删除自身
-        else if ((surplus - root.val < 0) || (root.left == null && root.right == null)) {
+        else if ((surplus - root.getVal() < 0) || (root.getLeft() == null && root.getRight() == null)) {
             list.remove(list.size() - 1);
             return;
         }
         //当前剩余值大于0，并且子节点存在，需继续进行计算
-        dfs(list, root.left, surplus - root.val);
-        dfs(list, root.right, surplus - root.val);
+        dfs(list, root.getLeft(), surplus - root.getVal());
+        dfs(list, root.getRight(), surplus - root.getVal());
         //计算完之后，删除自身，查找更多数值组合可能
         list.remove(list.size() - 1);
     }
 
     /**
      * 回溯，往下减（一）
+     *
      * @param root
      * @param sum
      * @return
@@ -2037,6 +1884,7 @@ public class Solution {
 
     /**
      * 回溯，往下减（一）
+     *
      * @param root
      * @param sum
      * @param list
@@ -2048,12 +1896,12 @@ public class Solution {
         if (root == null)
             return;
         //把当前节点值加入到list中
-        list.add(new Integer(root.val));
+        list.add(new Integer(root.getVal()));
         //如果到达叶子节点，就不能往下走了，直接return
-        if (root.left == null && root.right == null) {
+        if (root.getLeft() == null && root.getRight() == null) {
             //如果到达叶子节点，并且sum等于叶子节点的值，说明我们找到了一组，
             //要把它放到result中
-            if (sum == root.val)
+            if (sum == root.getVal())
                 result.add(new ArrayList(list));
             //注意别忘了把最后加入的结点值给移除掉，因为下一步直接return了，
             //不会再走最后一行的remove了，所以这里在rerurn之前提前把最后
@@ -2064,8 +1912,8 @@ public class Solution {
         }
         //如果没到达叶子节点，就继续从他的左右两个子节点往下找，注意到
         //下一步的时候，sum值要减去当前节点的值
-        dfs(root.left, sum - root.val, list, result);
-        dfs(root.right, sum - root.val, list, result);
+        dfs(root.getLeft(), sum - root.getVal(), list, result);
+        dfs(root.getRight(), sum - root.getVal(), list, result);
         //我们要理解递归的本质，当递归往下传递的时候他最后还是会往回走，
         //我们把这个值使用完之后还要把它给移除，这就是回溯
         list.remove(list.size() - 1);
@@ -2073,6 +1921,7 @@ public class Solution {
 
     /**
      * 回溯，往下累加（一）
+     *
      * @param root
      * @param sum
      * @return
@@ -2085,6 +1934,7 @@ public class Solution {
 
     /**
      * 回溯，往下累加（二）
+     *
      * @param root
      * @param sum
      * @param toal
@@ -2097,11 +1947,11 @@ public class Solution {
         if (root == null)
             return;
         //把当前节点值加入到list中
-        list.add(new Integer(root.val));
+        list.add(new Integer(root.getVal()));
         //没往下走一步就要计算走过的路径和
-        toal += root.val;
+        toal += root.getVal();
         //如果到达叶子节点，就不能往下走了，直接return
-        if (root.left == null && root.right == null) {
+        if (root.getLeft() == null && root.getRight() == null) {
             //如果到达叶子节点，并且sum等于toal，说明我们找到了一组，
             //要把它放到result中
             if (sum == toal)
@@ -2114,15 +1964,47 @@ public class Solution {
             return;
         }
         //如果没到达叶子节点，就继续从他的左右两个子节点往下找
-        dfs(root.left, sum, toal, list, result);
-        dfs(root.right, sum, toal, list, result);
+        dfs(root.getLeft(), sum, toal, list, result);
+        dfs(root.getRight(), sum, toal, list, result);
         //我们要理解递归的本质，当递归往下传递的时候他最后还是会往回走，
         //我们把这个值使用完之后还要把它给移除，这就是回溯
         list.remove(list.size() - 1);
     }
 
+    public static Node2 connect(Node2 root) {
+        if (root == null)
+            return root;
+        //cur我们可以把它看做是每一层的链表
+        Node2 cur = root;
+        while (cur != null) {
+            //遍历当前层的时候，为了方便操作在下一层前面添加一个哑结点（注意这里是访问当前层的节点，然后把下一层的节点串起来）
+            Node2 dummy = new Node2(0);
+            //pre表示访下一层节点的前一个节点
+            Node2 pre = dummy;
+            //然后开始遍历当前层的链表
+            while (cur != null) {
+                if (cur.getLeft() != null) {
+                    //如果当前节点的左子节点不为空，就让pre节点的next指向他，也就是把它串起来
+                    pre.setNext(cur.getLeft());
+                    //然后再更新pre
+                    pre = pre.getNext();
+                }
+                //同理参照左子树
+                if (cur.getRight() != null) {
+                    pre.setNext(cur.getRight());
+                    pre = pre.getNext();
+                }
+                //继续访问这样行的下一个节点
+                cur = cur.getNext();
+            }
+            //把下一层串联成一个链表之后，让他赋值给cur，后续继续循环，直到cur为空为止
+            cur = dummy.getNext();
+        }
+        return root;
+    }
+
     public static void main(String[] args) throws IOException {
-        System.out.println(pathSum(stringToTreeNode("[1,2]"), 1));
+        System.out.println(connect(Node2.stringToNode2("[1,2,3,4,5,null,7]")));
     }
 
 }
