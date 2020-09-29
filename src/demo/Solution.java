@@ -2003,8 +2003,37 @@ public class Solution {
         return root;
     }
 
+    /**
+     * 二叉树的后序遍历
+     * @param root
+     * @return
+     */
+    public static List<Integer> postorderTraversal(TreeNode root) {
+        List<Integer> list = new ArrayList();
+        afterSequence(list, root);
+        return list;
+
+    }
+
+    /**
+     * 后序遍历输出list--递归算法
+     * @param list
+     * @param root
+     */
+    public static void afterSequence(List<Integer> list, TreeNode root) {
+        //终止条件
+        if (root == null)
+            return;
+        //遍历当前节点的左子树
+        afterSequence(list, root.getLeft());
+        //遍历当前节点的右子树
+        afterSequence(list, root.getRight());
+        //把当前节点加入到集合中
+        list.add(root.getVal());
+    }
+
     public static void main(String[] args) throws IOException {
-        System.out.println(connect(Node2.stringToNode2("[1,2,3,4,5,null,7]")));
+        System.out.println(postorderTraversal(TreeNode.stringToTreeNode("[1,null,2,3]")));
     }
 
 }
