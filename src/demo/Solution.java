@@ -2005,6 +2005,7 @@ public class Solution {
 
     /**
      * 二叉树的后序遍历
+     *
      * @param root
      * @return
      */
@@ -2017,6 +2018,7 @@ public class Solution {
 
     /**
      * 后序遍历输出list--递归算法
+     *
      * @param list
      * @param root
      */
@@ -2032,8 +2034,33 @@ public class Solution {
         list.add(root.getVal());
     }
 
+    /**
+     * 判断一个整数是否是回文数。回文数是指正序（从左向右）和倒序（从右向左）读都是一样的整数。
+     *
+     * @param x
+     * @return
+     */
+    public static boolean isPalindrome(int x) {
+        if (x < 0) {
+            return false;
+        }
+        List<Integer> list = new ArrayList<>();
+        int y = x;
+        while (y > 0) {
+            int a = y % 10;
+            y /= 10;
+            list.add(a);
+        }
+        for (int i = 0, j = list.size() - 1; i < j; i++, j--) {
+            if (list.get(i) != list.get(j)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public static void main(String[] args) throws IOException {
-        System.out.println(postorderTraversal(TreeNode.stringToTreeNode("[1,null,2,3]")));
+        System.out.println(isPalindrome(10));
     }
 
 }
