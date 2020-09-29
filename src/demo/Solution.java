@@ -2059,6 +2059,26 @@ public class Solution {
         return true;
     }
 
+    /**
+     * 拥有最多糖果的孩子
+     * 给你一个数组 candies 和一个整数 extraCandies ，其中 candies[i] 代表第 i 个孩子拥有的糖果数目。
+     **/
+    public List<Boolean> kidsWithCandies(int[] candies, int extraCandies) {
+        int x = 0;
+        for (int i : candies) {
+            if (i > x)
+                x = i;
+        }
+        List<Boolean> list = new ArrayList<>();
+        for (int i : candies) {
+            if (i + extraCandies >= x)
+                list.add(true);
+            else
+                list.add(false);
+        }
+        return list;
+    }
+
     public static void main(String[] args) throws IOException {
         System.out.println(isPalindrome(10));
     }
