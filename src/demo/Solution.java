@@ -2160,8 +2160,23 @@ public class Solution {
         node.setNext(node.getNext());
     }
 
+    /**
+     * 数组异或操作
+     *
+     * @param n
+     * @param start
+     * @return
+     */
+    public int xorOperation(int n, int start) {
+        int end = 0;
+        for (int i = 0; i < n; i++) {
+            end ^= start + 2 * i;
+        }
+        return end;
+    }
+
     public static void main(String[] args) throws IOException {
-        System.out.println(reverseLeftWords("abcdefg", 2));
+        System.out.println(0 ^ 7);
     }
 
 }
