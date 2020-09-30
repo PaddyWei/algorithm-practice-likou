@@ -2192,6 +2192,25 @@ public class Solution {
         return count;
     }
 
+    /**
+     * 宝石与石头
+     *
+     * @param J
+     * @param S
+     * @return
+     */
+    public int numJewelsInStones(String J, String S) {
+        int count = 0;
+        for (int i = 0, j = 0; i < J.length(); i++) {
+            for (j = 0; j < S.length(); j++) {
+                if (J.charAt(i) == S.charAt(j)) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
     public static void main(String[] args) throws IOException {
         System.out.println(0 ^ 7);
     }
