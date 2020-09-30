@@ -2081,6 +2081,7 @@ public class Solution {
 
     /**
      * 二叉搜索树中的插入操作
+     *
      * @param root
      * @param val
      * @return
@@ -2103,8 +2104,21 @@ public class Solution {
         return root;
     }
 
+    /**
+     * 左旋转字符串
+     *
+     * @param s
+     * @param n
+     * @return
+     */
+    public static String reverseLeftWords(String s, int n) {
+        String substring = s.substring(0, n);
+        String substring1 = s.substring(n, s.length());
+        return substring1 + substring;
+    }
+
     public static void main(String[] args) throws IOException {
-        System.out.println(isPalindrome(10));
+        System.out.println(reverseLeftWords("abcdefg", 2));
     }
 
 }
