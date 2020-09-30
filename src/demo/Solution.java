@@ -2079,6 +2079,30 @@ public class Solution {
         return list;
     }
 
+    /**
+     * 二叉搜索树中的插入操作
+     * @param root
+     * @param val
+     * @return
+     */
+    public TreeNode insertIntoBST(TreeNode root, int val) {
+        if (root == null) {
+            return new TreeNode(val);
+        }
+        if (val < root.getVal()) {
+            if (root.getLeft() == null)
+                root.setLeft(new TreeNode(val));
+            else
+                insertIntoBST(root.getLeft(), val);
+        } else {
+            if (root.getRight() == null)
+                root.setRight(new TreeNode(val));
+            else
+                insertIntoBST(root.getRight(), val);
+        }
+        return root;
+    }
+
     public static void main(String[] args) throws IOException {
         System.out.println(isPalindrome(10));
     }
