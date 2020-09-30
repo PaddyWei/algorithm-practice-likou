@@ -2175,6 +2175,23 @@ public class Solution {
         return end;
     }
 
+    /**
+     * 猜数字
+     *
+     * @param guess
+     * @param answer
+     * @return
+     */
+    public int game(int[] guess, int[] answer) {
+        int count = 0;
+        for (int i = 0; i < guess.length; i++) {
+            if (guess[i] == answer[i]) {
+                count++;
+            }
+        }
+        return count;
+    }
+
     public static void main(String[] args) throws IOException {
         System.out.println(0 ^ 7);
     }
