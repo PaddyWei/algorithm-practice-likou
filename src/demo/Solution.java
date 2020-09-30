@@ -2150,6 +2150,16 @@ public class Solution {
         return ints;
     }
 
+    /**
+     * 删除中间节点
+     *
+     * @param node 当前需删除节点
+     */
+    public void deleteNode(ListNode node) {
+        node.setVal(node.getNext().getVal());
+        node.setNext(node.getNext());
+    }
+
     public static void main(String[] args) throws IOException {
         System.out.println(reverseLeftWords("abcdefg", 2));
     }
