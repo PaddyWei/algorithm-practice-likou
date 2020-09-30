@@ -2117,6 +2117,39 @@ public class Solution {
         return substring1 + substring;
     }
 
+    /**
+     * 重新排列数组--1
+     *
+     * @param nums
+     * @param n
+     * @return
+     */
+    public int[] shuffle(int[] nums, int n) {
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0, j = n; j < nums.length; i++, j++) {
+            list.add(nums[i]);
+            list.add(nums[j]);
+
+        }
+        return list.stream().mapToInt(Integer::intValue).toArray();
+    }
+
+    /**
+     * 重新排列数组--2
+     *
+     * @param nums
+     * @param n
+     * @return
+     */
+    public int[] shuffle2(int[] nums, int n) {
+        int[] ints = new int[nums.length];
+        for (int i = 0, j = n, k = 0; j < nums.length; i++, j++, k += 2) {
+            ints[k] = nums[i];
+            ints[k + 1] = nums[j];
+        }
+        return ints;
+    }
+
     public static void main(String[] args) throws IOException {
         System.out.println(reverseLeftWords("abcdefg", 2));
     }
