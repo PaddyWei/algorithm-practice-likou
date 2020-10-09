@@ -2211,6 +2211,48 @@ public class Solution {
         return count;
     }
 
+    /**
+     * 快慢指针解决
+     * @param head
+     * @return
+     */
+    public boolean hasCycle(ListNode head) {
+        if (head == null)
+            return false;
+        //快慢两个指针
+        ListNode slow = head;
+        ListNode fast = head;
+        while (fast != null && fast.getNext() != null) {
+            //慢指针每次走一步
+            slow = slow.getNext();
+            //快指针每次走两步
+            fast = fast.getNext().getNext();
+            //如果相遇，说明有环，直接返回true
+            if (slow == fast)
+                return true;
+        }
+        //否则就是没环
+        return false;
+    }
+
+    /**
+     * 判断重复路线
+     * @param head
+     * @return
+     */
+    public boolean hasCycle2(ListNode head) {
+        Set<ListNode> set = new HashSet<>();
+        while (head != null) {
+            //如果重复出现说明有环
+            if (set.contains(head))
+                return true;
+            //否则就把当前节点加入到集合中
+            set.add(head);
+            head = head.getNext();
+        }
+        return false;
+    }
+
     public static void main(String[] args) throws IOException {
         System.out.println(0 ^ 7);
     }
