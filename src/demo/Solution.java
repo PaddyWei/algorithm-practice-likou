@@ -2253,8 +2253,49 @@ public class Solution {
         return false;
     }
 
+    /**
+     * 判断重复出现第一次的节点
+     * @param head
+     * @return
+     */
+    public ListNode detectCycle(ListNode head) {
+        Set<ListNode> set = new HashSet<>();
+        while (head != null) {
+            //如果重复出现说明有环
+            if (set.contains(head))
+                return head;
+            //否则就把当前节点加入到集合中
+            set.add(head);
+            head = head.getNext();
+        }
+        return null;
+    }
+
+    /**
+     * 利用快慢指针，得出入环节点
+     * @param head
+     * @return
+     */
+    public ListNode detectCycle2(ListNode head) {
+        ListNode fast = head, slow = head;
+        while (true) {
+            //如果为null，无闭环，返回null
+            if (fast == null || fast.getNext() == null) return null;
+            //快慢指针，快指针每次走两步，慢指针每次走一步
+            fast = fast.getNext().getNext();
+            slow = slow.getNext();
+            if (fast == slow) break;
+        }
+        fast = head;
+        //两相遇指针，一个从头结点开始，一个从相遇点开始每次走一步，直到再次相遇为止
+        while (slow != fast) {
+            slow = slow.getNext();
+            fast = fast.getNext();
+        }
+        return fast;
+    }
+
     public static void main(String[] args) throws IOException {
-        System.out.println(0 ^ 7);
     }
 
 }
