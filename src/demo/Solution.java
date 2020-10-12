@@ -2213,6 +2213,7 @@ public class Solution {
 
     /**
      * 快慢指针解决
+     *
      * @param head
      * @return
      */
@@ -2237,6 +2238,7 @@ public class Solution {
 
     /**
      * 判断重复路线
+     *
      * @param head
      * @return
      */
@@ -2255,6 +2257,7 @@ public class Solution {
 
     /**
      * 判断重复出现第一次的节点
+     *
      * @param head
      * @return
      */
@@ -2273,6 +2276,7 @@ public class Solution {
 
     /**
      * 利用快慢指针，得出入环节点
+     *
      * @param head
      * @return
      */
@@ -2293,6 +2297,34 @@ public class Solution {
             fast = fast.getNext();
         }
         return fast;
+    }
+
+    private int min = Integer.MAX_VALUE;
+    private TreeNode treeNode;
+
+    /**
+     * 二叉搜索树的最小绝对差
+     *
+     * @param root
+     * @return
+     */
+    public int getMinimumDifference(TreeNode root) {
+        theSmallestDifference(root);
+        return min;
+    }
+
+    public void theSmallestDifference(TreeNode root) {
+        //边界结束条件
+        if (root == null)
+            return;
+        //左子节点
+        theSmallestDifference(root.getLeft());
+        //对当前节点操作
+        if (treeNode != null)
+            this.min = Math.min(this.min, root.getVal() - treeNode.getVal());
+        treeNode = root;
+        //右子节点
+        theSmallestDifference(root.getRight());
     }
 
     public static void main(String[] args) throws IOException {
