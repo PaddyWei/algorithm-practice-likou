@@ -2327,6 +2327,54 @@ public class Solution {
         theSmallestDifference(root.getRight());
     }
 
+    /**
+     * 两两交换链表中的节点--递归算法
+     *
+     * @param head
+     * @return
+     */
+    public ListNode swapPairs(ListNode head) {
+        if (head == null || head.getNext() == null) {
+            return head;
+        }
+        ListNode newHead = head.getNext();
+        head.setNext(swapPairs(newHead.getNext()));
+        newHead.setNext(head);
+        return newHead;
+    }
+
+    /**
+     * 两两交换链表中的节点--双指针算法
+     *
+     * @param head
+     * @return
+     */
+    public ListNode swapPairs2(ListNode head) {
+        //至少含有两个节点，否则不能进行两两互换
+        if (head == null || head.getNext() == null) {
+            return head;
+        }
+        ListNode listNode1 = head, listNode2 = head.getNext();
+        ListNode newHead = listNode2;
+        while (true) {
+            //前两个互换
+            listNode1.setNext(listNode2.getNext());
+            listNode2.setNext(listNode1);
+            //判断后两个节点是否存在，不存在则结束互换
+            if (listNode1.getNext() == null || listNode1.getNext().getNext() == null) {
+                break;
+            }
+            //记录一下，否则执行“串起来”后无法让p1，p2指向两个新的待交换节点”串起来”分别指向两个新的待交换节点
+            ListNode temp = listNode1.getNext();
+            listNode1.setNext(listNode1.getNext().getNext());
+            listNode1.setNext(temp);
+            listNode2.setNext(temp.getNext());
+
+        }
+
+        return newHead;
+    }
+
     public static void main(String[] args) throws IOException {
     }
 
