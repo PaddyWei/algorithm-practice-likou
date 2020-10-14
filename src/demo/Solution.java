@@ -2375,7 +2375,90 @@ public class Solution {
         return newHead;
     }
 
+    /**
+     * 查找常用字符
+     *
+     * @param A
+     * @return
+     */
+    public static List<String> commonChars(String[] A) {
+        List<Map<Character, Integer>> list = new ArrayList<>();
+        for (String str : A) {
+            Map<Character, Integer> map = new HashMap();
+            for (int i = 0; i < str.length(); i++) {
+                if (!map.containsKey(str.charAt(i))) {
+                    map.put(str.charAt(i), 1);
+                } else {
+                    map.put(str.charAt(i), map.get(str.charAt(i)) + 1);
+                }
+            }
+            list.add(map);
+        }
+
+        List<String> strings = new ArrayList<>();
+        for (char c : list.get(0).keySet()) {
+            int num = list.get(0).get(c);
+            boolean b = true;
+            for (int i = 1; i < list.size(); i++) {
+                if (list.get(i).containsKey(c)) {
+                    num = Math.min(list.get(i).get(c), num);
+                } else {
+                    b = false;
+                    break;
+                }
+            }
+            if (b) {
+                while (num > 0) {
+                    strings.add(String.valueOf(c));
+                    num--;
+                }
+            }
+        }
+        return strings;
+    }
+
+    /**
+     * 查找常用字符--优化时间，优化内存占用
+     *
+     * @param A
+     * @return
+     */
+    public static List<String> commonChars2(String[] A) {
+        int[] ints = getCs(A[0]);
+        for (int i = 1; i < A.length; i++) {
+            int[] newInt = getCs(A[i]);
+            for (int j = 0; j < ints.length; j++) {
+                if (ints[j] > newInt[j]) {
+                    ints[j] = newInt[j];
+                }
+            }
+        }
+        List<String> list = new ArrayList<>();
+        int m = 0;
+        for (int i : ints) {
+            if (i != 0) {
+                while (i > 0) {
+                    list.add(Character.toString((char) ('a' + m)));
+                    i--;
+                }
+            }
+            m++;
+        }
+        return list;
+    }
+
+    private static int[] getCs(String s) {
+        int[] cs = new int[26];
+
+        for (char c : s.toCharArray()) {
+            cs[c - 'a']++;
+        }
+
+        return cs;
+    }
+
     public static void main(String[] args) throws IOException {
+        System.out.println(commonChars2(new String[]{"bella", "label", "roller"}));
     }
 
 }
