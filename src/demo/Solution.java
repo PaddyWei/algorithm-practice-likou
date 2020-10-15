@@ -2457,6 +2457,25 @@ public class Solution {
         return cs;
     }
 
+    /**
+     * 填充每个节点的下一个右侧节点指针 II -- 递归调用
+     *
+     * @param root
+     * @return
+     */
+    public Node connect(Node root) {
+        dfs(root, null);
+        return root;
+    }
+
+    private void dfs(Node curr, Node next) {
+        if (curr == null)
+            return;
+        curr.setNext(next);
+        dfs(curr.getLeft(), curr.getRight());
+        dfs(curr.getRight(), curr.getNext() == null ? null : curr.getNext().getRight());
+    }
+
     public static void main(String[] args) throws IOException {
         System.out.println(commonChars2(new String[]{"bella", "label", "roller"}));
     }

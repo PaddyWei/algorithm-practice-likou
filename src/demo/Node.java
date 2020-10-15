@@ -14,6 +14,9 @@ public class Node {
 
     public int val;
     public List<Node> neighbors;
+    public Node left;
+    public Node right;
+    public Node next;
 
     public Node() {
         val = 0;
@@ -28,6 +31,13 @@ public class Node {
     public Node(int _val, ArrayList<Node> _neighbors) {
         val = _val;
         neighbors = _neighbors;
+    }
+
+    public Node(int _val, Node _left, Node _right, Node _next) {
+        val = _val;
+        left = _left;
+        right = _right;
+        next = _next;
     }
 
     @Override
@@ -52,5 +62,29 @@ public class Node {
 
     public void setNeighbors(List<Node> neighbors) {
         this.neighbors = neighbors;
+    }
+
+    public Node getLeft() {
+        return left;
+    }
+
+    public void setLeft(Node left) {
+        this.left = left;
+    }
+
+    public Node getRight() {
+        return right;
+    }
+
+    public void setRight(Node right) {
+        this.right = right;
+    }
+
+    public Node getNext() {
+        return next;
+    }
+
+    public void setNext(Node next) {
+        this.next = next;
     }
 }
