@@ -2,6 +2,8 @@ package demo;
 
 import java.io.IOException;
 import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -2490,8 +2492,34 @@ public class Solution {
         return A;
     }
 
+    /**
+     * 比较含退格的字符串
+     *
+     * @param S
+     * @param T
+     * @return
+     */
+    public static boolean backspaceCompare(String S, String T) {
+        String s = "", t = "";
+        for (int i = 0; i < S.length(); i++) {
+            if ('#' == S.charAt(i)) {
+                s = s.length() - 1 < 0 ? s : s.substring(0, s.length() - 1);
+                continue;
+            }
+            s += S.charAt(i);
+        }
+        for (int i = 0; i < T.length(); i++) {
+            if ('#' == T.charAt(i)) {
+                t = t.length() - 1 < 0 ? t : t.substring(0, t.length() - 1);
+                continue;
+            }
+            t += T.charAt(i);
+        }
+        return s.equals(t);
+    }
+
     public static void main(String[] args) throws IOException {
-        System.out.println(commonChars2(new String[]{"bella", "label", "roller"}));
+        System.out.println(backspaceCompare("ab##", "c#d#"));
     }
 
 }
