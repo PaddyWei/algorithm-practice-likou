@@ -2518,8 +2518,35 @@ public class Solution {
         return s.equals(t);
     }
 
+    /**
+     * 重排链表
+     * @param head
+     */
+    public static void reorderList(ListNode head) {
+        List<Integer> list = new ArrayList<>();
+        while (head != null) {
+            list.add(head.getVal());
+            head = head.getNext();
+        }
+        ListNode newNode = new ListNode(0);
+        head = newNode;
+        for (int i = 0, j = list.size() - 1; i <= j; i++, j--) {
+            if (i != j) {
+                newNode.setNext(new ListNode(list.get(i)));
+                newNode = newNode.getNext();
+                newNode.setNext(new ListNode(list.get(j)));
+                newNode = newNode.getNext();
+            } else {
+                newNode.setNext(new ListNode(list.get(i)));
+            }
+        }
+        head = head.getNext();
+        System.out.println(ListNode.listNodeToString(head));
+        return;
+    }
+
     public static void main(String[] args) throws IOException {
-        System.out.println(backspaceCompare("ab##", "c#d#"));
+        reorderList(ListNode.stringToListNode("[1,2,3,4,5]"));
     }
 
 }
