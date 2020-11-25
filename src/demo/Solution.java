@@ -2645,8 +2645,36 @@ public class Solution {
         return countNodes(root.getLeft()) + countNodes(root.getRight()) + 1;
     }
 
+    /**
+     * 用最少数量的箭引爆气球
+     *
+     * @param points
+     * @return
+     */
+    public static int findMinArrowShots(int[][] points) {
+        if (points == null || points.length == 0) {
+            return 0;
+        }
+        //对每个数组下标0数升序排序
+        Arrays.sort(points, (x, y) -> x[0] > y[0] ? 1 : -1);
+        int count = 1;
+        for (int i = 1; i < points.length; i++) {
+            int[] p1 = points[i - 1];
+            int[] p2 = points[i];
+            if (p2[0] <= p1[1]) {
+                //和前一数组有交集时合并交集区间并存入当前数组
+                points[i][0] = Math.max(p2[0], p1[0]);
+                points[i][1] = Math.min(p2[1], p1[1]);
+            } else {
+                //当前数组区间和前一个数组区间没有交集时计数加一
+                count++;
+            }
+        }
+        return count;
+    }
+
     public static void main(String[] args) {
-        System.out.println(sortString("aaaabbbbcccc"));
+        System.out.println(findMinArrowShots(null));
     }
 
 }
