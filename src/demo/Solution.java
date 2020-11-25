@@ -2598,6 +2598,12 @@ public class Solution {
         return list.toArray(new int[list.size()][2]);
     }
 
+    /**
+     * 上升下降字符串
+     *
+     * @param s
+     * @return
+     */
     public static String sortString(String s) {
         int[] letter = new int[26];
         char[] chars = s.toCharArray();
@@ -2624,6 +2630,19 @@ public class Solution {
             }
         }
         return stringBuffer.toString();
+    }
+
+    /**
+     * 完全二叉树的节点个数
+     *
+     * @param root
+     * @return
+     */
+    public int countNodes(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        return countNodes(root.getLeft()) + countNodes(root.getRight()) + 1;
     }
 
     public static void main(String[] args) {
