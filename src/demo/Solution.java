@@ -1,6 +1,7 @@
 package demo;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -2674,7 +2675,7 @@ public class Solution {
     }
 
     /**
-     *
+     * 有效的字母异位词
      *
      * @param s
      * @param t
@@ -2691,8 +2692,34 @@ public class Solution {
         return Arrays.equals(chars, chart);
     }
 
+    /**
+     * 排序链表
+     *
+     * @param head
+     * @return
+     */
+    public static ListNode sortList(ListNode head) {
+        if (head == null) {
+            return head;
+        }
+        List<Integer> list = new ArrayList<>();
+        while (head != null) {
+            list.add(head.getVal());
+            head = head.getNext();
+        }
+        Collections.sort(list);
+        ListNode listNode = new ListNode();
+        ListNode finalListNode = listNode;
+        for (int i : list) {
+            ListNode node = new ListNode(i);
+            listNode.setNext(node);
+            listNode = node;
+        }
+        return finalListNode.getNext();
+    }
+
     public static void main(String[] args) {
-        System.out.println(isAnagram("null", "ulln"));
+        System.out.println(sortList(ListNode.stringToListNode("[4,2,1,3]")));
     }
 
 }
