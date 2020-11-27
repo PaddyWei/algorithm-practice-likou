@@ -2738,9 +2738,54 @@ public class Solution {
         return spacing;
     }
 
+    /**
+     * 四数相加 II --- 分组计算
+     *
+     * @param A
+     * @param B
+     * @param C
+     * @param D
+     * @return
+     */
+    public static int fourSumCount(int[] A, int[] B, int[] C, int[] D) {
+        int count = 0;
+        HashMap<Integer, Integer> map = new HashMap<>();
+//        for (int i = 0; i < A.length; i++) {
+//            for (int j = 0; j < B.length; j++) {
+//                map.put(A[i] + B[j], map.getOrDefault(A[i] + B[j], 0) + 1);
+//            }
+//        }
+//        for (int k = 0; k < C.length; k++) {
+//            for (int l = 0; l < D.length; l++) {
+//                count += map.getOrDefault(-(C[k] + D[l]), 0);
+//            }
+//        }
+        // 性能优化
+        for (int a : A) {
+            for (int b : B) {
+                if (map.containsKey(a + b)) {
+                    map.put(a + b, map.get(a + b) + 1);
+                } else {
+                    map.put(a + b, 1);
+                }
+            }
+        }
+        for (int c : C) {
+            for (int d : D) {
+                if (map.containsKey(-(c + d))) {
+                    count += map.get(-(c + d));
+                }
+            }
+        }
+        return count;
+    }
+
     public static void main(String[] args) {
-        int[] nums = new int[]{1, 1, 1, 1, 1, 5, 5, 5, 5, 5};
-        System.out.println(maximumGap(nums));
+        int[] A = {-1, -1};
+        int[] B = {-1, 1};
+        int[] C = {-1, 1};
+        int[] D = {1, -1};
+        System.out.println(fourSumCount(A, B, C, D));
     }
 
 }
