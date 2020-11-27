@@ -2780,12 +2780,47 @@ public class Solution {
         return count;
     }
 
+    public static void moveZeroes(int[] nums) {
+        //方法一
+//        int count = 1;
+//        for (int i = nums.length - 1; i >= 0; i--) {
+//            if (nums[i] == 0) {
+//                for (int j = i; j < nums.length - count; j++) {
+//                    nums[j] = nums[j + 1];
+//                }
+//                nums[nums.length - count] = 0;
+//            }
+//        }
+        //方法二
+//        int count = 0;
+//        for (int i = 0; i < nums.length; i++) {
+//            while (i < nums.length - count && nums[i + count] == 0) {
+//                count++;
+//            }
+//            if (i < nums.length - count) {
+//                nums[i] = nums[i + count];
+//            } else {
+//                nums[i] = 0;
+//            }
+//        }
+
+        //方法三
+        int count = 0;
+        for (int i = 0; i < nums.length; i++) {
+            count = 0;
+            while (i < nums.length - count && nums[i + count] == 0) {
+                count++;
+            }
+            if (i < nums.length - count && nums[i] == 0) {
+                nums[i] = nums[i + count];
+                nums[i + count] = 0;
+            }
+        }
+    }
+
     public static void main(String[] args) {
-        int[] A = {-1, -1};
-        int[] B = {-1, 1};
-        int[] C = {-1, 1};
-        int[] D = {1, -1};
-        System.out.println(fourSumCount(A, B, C, D));
+        int[] A = {0,1,0,3,12};
+        moveZeroes(A);
     }
 
 }
