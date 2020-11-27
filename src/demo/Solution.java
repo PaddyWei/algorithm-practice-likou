@@ -2718,8 +2718,29 @@ public class Solution {
         return finalListNode.getNext();
     }
 
+    /**
+     * 最大间距
+     *
+     * @param nums
+     * @return
+     */
+    public static int maximumGap(int[] nums) {
+        if (nums == null || nums.length <= 1) {
+            return 0;
+        }
+        Arrays.sort(nums);
+        int spacing = 0;
+        for (int i = 1; i < nums.length; i++) {
+            if (spacing < nums[i] - nums[i - 1]) {
+                spacing = nums[i] - nums[i - 1];
+            }
+        }
+        return spacing;
+    }
+
     public static void main(String[] args) {
-        System.out.println(sortList(ListNode.stringToListNode("[4,2,1,3]")));
+        int[] nums = new int[]{1, 1, 1, 1, 1, 5, 5, 5, 5, 5};
+        System.out.println(maximumGap(nums));
     }
 
 }
