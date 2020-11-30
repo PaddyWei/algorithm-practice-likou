@@ -2780,6 +2780,11 @@ public class Solution {
         return count;
     }
 
+    /**
+     * 移动零
+     *
+     * @param nums
+     */
     public static void moveZeroes(int[] nums) {
         //方法一
 //        int count = 1;
@@ -2805,16 +2810,27 @@ public class Solution {
 //        }
 
         //方法三
-        int count = 0;
-        for (int i = 0; i < nums.length; i++) {
-            count = 0;
-            while (i < nums.length - count && nums[i + count] == 0) {
-                count++;
+//        int count = 0;
+//        for (int i = 0; i < nums.length; i++) {
+//            count = 0;
+//            while (i < nums.length - count && nums[i + count] == 0) {
+//                count++;
+//            }
+//            if (i < nums.length - count && nums[i] == 0) {
+//                nums[i] = nums[i + count];
+//                nums[i + count] = 0;
+//            }
+//        }
+        for (int i = 0, j = 0; i < nums.length;) {
+            if (nums[j] == 0) {
+                j++;
+                continue;
             }
-            if (i < nums.length - count && nums[i] == 0) {
-                nums[i] = nums[i + count];
-                nums[i + count] = 0;
+            if (nums[i] == 0) {
+                nums[i] = nums[j];
             }
+            i++;
+            j++;
         }
     }
 
