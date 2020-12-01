@@ -2821,7 +2821,7 @@ public class Solution {
 //                nums[i + count] = 0;
 //            }
 //        }
-        for (int i = 0, j = 0; i < nums.length;) {
+        for (int i = 0, j = 0; i < nums.length; ) {
             if (nums[j] == 0) {
                 j++;
                 continue;
@@ -2834,9 +2834,89 @@ public class Solution {
         }
     }
 
+    /**
+     * 在排序数组中查找元素的第一个和最后一个位置
+     *
+     * @param nums
+     * @param target
+     * @return
+     */
+    public static int[] searchRange(int[] nums, int target) {
+        int[] ints = new int[]{-1, -1};
+        if (nums.length == 1) {
+            if (nums[0] == target) {
+                return new int[]{0, 0};
+            }
+        } else {
+            for (int i = 0, j = nums.length - 1; i <= j; ) {
+                if (ints[0] == -1 && nums[i] == target) {
+                    ints[0] = i;
+                } else if (ints[0] == -1) {
+                    i++;
+                }
+                if (ints[1] == -1 && nums[j] == target) {
+                    ints[1] = j;
+                } else if (ints[1] == -1) {
+                    j--;
+                }
+                if (ints[0] != -1 && ints[1] != -1) {
+                    break;
+                }
+            }
+            if (ints[1] == -1) {
+                ints[1] = ints[0];
+            } else if (ints[0] == -1) {
+                ints[0] = ints[1];
+            }
+        }
+
+        System.out.println(ints[0]);
+        System.out.println(ints[1]);
+        return ints;
+    }
+
+    /**
+     * 在排序数组中查找元素的第一个和最后一个位置 --- 二分法
+     *
+     * @param nums
+     * @param target
+     * @return
+     */
+    public int[] searchRange2(int[] nums, int target) {
+        //查找第一个出现的target
+        int first = searchRangeHelper(nums, target);
+        //判断有没有查找到
+        if (first < nums.length && nums[first] == target) {
+            //如果查找到了，说明有这个值，我们再来查(target + 1)，如果有这个值，
+            //那么查找的结果也是第一次出现的(target + 1)的下标，我们减去1，就是target
+            //最后一次出现的下标。如果没有(target + 1)这个值，那么查找的结果就是第一个
+            // 大于target的下标，我们减去1也是target最后一次出现的下标。所以这里
+            // 无论有没有(target + 1)这个值，都不影响
+            int last = searchRangeHelper(nums, target + 1) - 1;
+            return new int[]{first, last};
+        } else {
+            //没有找到这个值，直接返回{-1, -1}
+            return new int[]{-1, -1};
+        }
+    }
+
+    //如果数组nums中有多个target，那么返回值就是第一个出现的target的下标
+    //如果数组nums中没有target，那么返回的就是第一个大于target的下标
+    public static int searchRangeHelper(int[] nums, double target) {
+        int low = 0, high = nums.length - 1;
+        while (low <= high) {
+            int m = low + (high - low) / 2;
+            if (target > nums[m])
+                low = m + 1;
+            else
+                high = m - 1;
+        }
+        return low;
+    }
+
     public static void main(String[] args) {
-        int[] A = {0,1,0,3,12};
-        moveZeroes(A);
+        int[] A = {5, 7, 7, 8, 8, 10};
+        searchRange(A, 8);
     }
 
 }
