@@ -1,13 +1,8 @@
 package demo;
 
-import java.io.IOException;
-import java.lang.reflect.Array;
 import java.text.NumberFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Solution {
     public static int[] twoSum(int[] nums, int target) {
@@ -2944,9 +2939,105 @@ public class Solution {
         return cnt;
     }
 
+    /**
+     * 柠檬水找零 --- 1
+     *
+     * @param bills
+     * @return
+     */
+    public static boolean lemonadeChange(int[] bills) {
+        Map<Integer, Integer> billsMap = new HashMap<>();
+        for (Integer bill : bills) {
+            switch (bill) {
+                case 5 : billsMap.put(5, billsMap.getOrDefault(5, 0) + 1);
+                    break;
+                case 10 :
+                    bill -= 5;
+                    while (bill > 0) {
+                        Integer five = billsMap.getOrDefault(5, 0);
+                        if (five == 0) {
+                            return false;
+                        }
+                        bill -= 5;
+                        billsMap.put(5, billsMap.getOrDefault(5, 0) - 1);
+                    }
+                    billsMap.put(10, billsMap.getOrDefault(10, 0) + 1);
+                    break;
+                case 20 :
+                    bill -= 5;
+                    while (bill > 0) {
+                        Integer ten = billsMap.getOrDefault(10, 0);
+                        if (ten != 0 && bill >= 10) {
+                            bill -= 10;
+                            billsMap.put(10, billsMap.getOrDefault(10, 0) - 1);
+                            continue;
+                        }
+                        Integer five = billsMap.getOrDefault(5, 0);
+                        if (five != 0) {
+                            bill -= 5;
+                            billsMap.put(5, billsMap.getOrDefault(5, 0) - 1);
+                            continue;
+                        }
+                        return false;
+                    }
+                    billsMap.put(20, billsMap.getOrDefault(20, 0) + 1);
+                    break;
+            }
+        }
+        return true;
+    }
+
+    /**
+     *
+     *
+     * @param bills
+     * @return
+     */
+    public boolean lemonadeChange2(int[] bills) {
+        //统计手头的零钱，20元的***对找零没用，不统计
+        int coin5 = 0, coin10 = 0;
+        for (int i = 0; i < bills.length; i++) {
+            int bill = bills[i];
+            switch(bill) {
+                case 5 :
+                    coin5++;
+                    break;
+
+                case 10:
+                    while (bill > 5) {
+                        if (coin5 <= 0) {
+                            return false;
+                        }
+                        coin5--;
+                        bill -= 5;
+                    }
+                    coin10++;
+                    break;
+
+                case 20:
+                    while (bill > 5) {
+                        //因为20找零必须用到至少一张5元，没有就gg了
+                        if (coin5 <= 0) {
+                            return false;
+                        }
+                        //优先找10元的
+                        if (bill == 10 || coin10 <= 0) {
+                            coin5--;
+                            bill -= 5;
+                        } else {
+                            coin10--;
+                            bill -= 10;
+                        }
+                    }
+                    break;
+            }
+        }
+        return true;
+    }
+
     public static void main(String[] args) {
-        int[] A = {5, 7, 7, 8, 8, 10};
-        searchRange(A, 8);
+        int[] A = {5,5,5,10,5,5,10,20,20,20};
+        System.out.println(lemonadeChange(A));
     }
 
 }
