@@ -2923,7 +2923,7 @@ public class Solution {
             // 如果当前是素数
             if (isPrim[i]) {
                 // 就把从 i*i 开始，i 的所有倍数都设置为 false。
-                for (int j = i * i; j < n; j+=i) {
+                for (int j = i * i; j < n; j += i) {
                     isPrim[j] = false;
                 }
             }
@@ -2949,9 +2949,10 @@ public class Solution {
         Map<Integer, Integer> billsMap = new HashMap<>();
         for (Integer bill : bills) {
             switch (bill) {
-                case 5 : billsMap.put(5, billsMap.getOrDefault(5, 0) + 1);
+                case 5:
+                    billsMap.put(5, billsMap.getOrDefault(5, 0) + 1);
                     break;
-                case 10 :
+                case 10:
                     bill -= 5;
                     while (bill > 0) {
                         Integer five = billsMap.getOrDefault(5, 0);
@@ -2963,7 +2964,7 @@ public class Solution {
                     }
                     billsMap.put(10, billsMap.getOrDefault(10, 0) + 1);
                     break;
-                case 20 :
+                case 20:
                     bill -= 5;
                     while (bill > 0) {
                         Integer ten = billsMap.getOrDefault(10, 0);
@@ -2988,8 +2989,6 @@ public class Solution {
     }
 
     /**
-     *
-     *
      * @param bills
      * @return
      */
@@ -2998,8 +2997,8 @@ public class Solution {
         int coin5 = 0, coin10 = 0;
         for (int i = 0; i < bills.length; i++) {
             int bill = bills[i];
-            switch(bill) {
-                case 5 :
+            switch (bill) {
+                case 5:
                     coin5++;
                     break;
 
@@ -3035,9 +3034,41 @@ public class Solution {
         return true;
     }
 
+    /**
+     *
+     *
+     * @param senate
+     * @return
+     */
+    public static String predictPartyVictory(String senate) {
+        int n = senate.length();
+        //Radiant阵营议员投票顺序队列
+        Queue<Integer> radiant = new LinkedList<Integer>();
+        //Dire阵营议员投票顺序队列
+        Queue<Integer> dire = new LinkedList<Integer>();
+        //根据阵营分配到对应阵营中
+        for (int i = 0; i < n; i++) {
+            if (senate.charAt(i) == 'R') {
+                radiant.add(i);
+            } else {
+                dire.add(i);
+            }
+        }
+        //根据双方阵营依次取出队列首位人员进行比较，存储胜利者继续进行投票
+        while (!radiant.isEmpty() && !dire.isEmpty()) {
+            int r = radiant.poll(), d = dire.poll();
+            if (r < d) {
+                radiant.add(r + n);
+            } else {
+                dire.add(d + n);
+            }
+        }
+        //Radiant阵营还存在议员则己方胜利，否则对方胜利
+        return radiant.isEmpty() ? "Dire" : "Radiant";
+    }
+
     public static void main(String[] args) {
-        int[] A = {5,5,5,10,5,5,10,20,20,20};
-        System.out.println(lemonadeChange(A));
+        System.out.println(predictPartyVictory("RD"));
     }
 
 }
