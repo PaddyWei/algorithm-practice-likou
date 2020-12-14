@@ -3035,7 +3035,7 @@ public class Solution {
     }
 
     /**
-     *
+     * Dota2 参议院
      *
      * @param senate
      * @return
@@ -3065,6 +3065,42 @@ public class Solution {
         }
         //Radiant阵营还存在议员则己方胜利，否则对方胜利
         return radiant.isEmpty() ? "Dire" : "Radiant";
+    }
+
+    /**
+     * 字母异位词分组
+     *
+     * @param strs
+     * @return
+     */
+    public List<List<String>> groupAnagrams(String[] strs) {
+        List<List<String>> lists = new ArrayList<>();
+        Map<String, Integer> strsMap = new HashMap<>();
+        int count = 0;
+        for (int i = 0; i < strs.length; i++) {
+            if (!strsMap.containsKey(internalStringSorting(strs[i]))) {
+                List<String> list = new ArrayList<>();
+                list.add(strs[i]);
+                lists.add(list);
+                strsMap.put(internalStringSorting(strs[i]), count);
+                count++;
+            } else {
+                lists.get(strsMap.get(internalStringSorting(strs[i]))).add(strs[i]);
+            }
+        }
+        return lists;
+    }
+
+    /**
+     * 字符串内部字符排序
+     *
+     * @param str
+     * @return
+     */
+    public static String internalStringSorting(String str) {
+        char[] chars = str.toCharArray();
+        Arrays.sort(chars);
+        return new String(chars);
     }
 
     public static void main(String[] args) {
