@@ -3145,7 +3145,7 @@ public class Solution {
         int i = 0;
         // 找出数字变小的位置
         for (; i < chars.length - 1; i++) {
-            if (chars[i+1] < chars[i]) {
+            if (chars[i + 1] < chars[i]) {
                 chars[i]--;
                 break;
             }
@@ -3161,14 +3161,55 @@ public class Solution {
             }
             chars[i - 1]--;
         }
-        for (int j = i + 1 ; j < chars.length; j++) {
+        for (int j = i + 1; j < chars.length; j++) {
             chars[j] = '9';
         }
         return Integer.valueOf(String.valueOf(chars));
     }
 
+    /**
+     * 单词规律
+     *
+     * @param pattern
+     * @param s
+     * @return
+     */
+    public static boolean wordPattern(String pattern, String s) {
+        if (pattern == null || "".equals(pattern) || s == null || "".equals(s)) return false;
+        String[] strings = s.split(" ");
+        if (pattern.length() != strings.length) return false;
+        Map<Character, String> stringMap = new HashMap<>();
+        for (int i = 0; i < pattern.length(); i++) {
+            if (!stringMap.containsKey(pattern.charAt(i))) {
+                if (stringMap.values().contains(strings[i])) return false;
+                stringMap.put(pattern.charAt(i), strings[i]);
+            } else if (stringMap.get(pattern.charAt(i)).equals(strings[i])) {
+
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 买卖股票的最佳时机 II
+     *
+     * @param prices
+     * @return
+     */
+    public int maxProfit(int[] prices) {
+        int sum = 0;
+        for (int i = 0; i < prices.length - 1; i++) {
+            if (prices[i] < prices[i + 1]) {
+                sum += (prices[i + 1] - prices[i]);
+            }
+        }
+        return sum;
+    }
+
     public static void main(String[] args) {
-        System.out.println(monotoneIncreasingDigits(332));
+        System.out.println(wordPattern("abba", "dog dog dog dog"));
     }
 
 }
