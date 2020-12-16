@@ -3103,8 +3103,72 @@ public class Solution {
         return new String(chars);
     }
 
+    /**
+     * 早餐组合
+     *
+     * @param staple
+     * @param drinks
+     * @param x
+     * @return
+     */
+    public static int breakfastNumber(int[] staple, int[] drinks, int x) {
+        int count = 0;
+        Arrays.sort(staple);
+        Arrays.sort(drinks);
+        for (int i = 0, j = 0; i < staple.length && j < drinks.length; ) {
+            if (staple[i] > x) {
+                return count;
+            } else if (drinks[j] > x || staple[i] + drinks[j] > x) {
+                i++;
+                j = 0;
+            } else {
+                j++;
+                count++;
+                if (j == drinks.length) {
+                    i++;
+                    j = 0;
+                }
+            }
+        }
+        return count;
+    }
+
+    /**
+     * 单调递增的数字
+     *
+     * @param N
+     * @return
+     */
+    public static int monotoneIncreasingDigits(int N) {
+        String n = String.valueOf(N);
+        char[] chars = n.toCharArray();
+        int i = 0;
+        // 找出数字变小的位置
+        for (; i < chars.length - 1; i++) {
+            if (chars[i+1] < chars[i]) {
+                chars[i]--;
+                break;
+            }
+        }
+        // 如果未找到i的位置，没有
+        if (i == chars.length - 1) {
+            return N;
+        }
+        // 从变小位置开始，向前数字减一，入贡果
+        for (; i > 0; i--) {
+            if (chars[i] >= chars[i - 1]) {
+                break;
+            }
+            chars[i - 1]--;
+        }
+        for (int j = i + 1 ; j < chars.length; j++) {
+            chars[j] = '9';
+        }
+        return Integer.valueOf(String.valueOf(chars));
+    }
+
     public static void main(String[] args) {
-        System.out.println(predictPartyVictory("RD"));
+        System.out.println(monotoneIncreasingDigits(332));
     }
 
 }
