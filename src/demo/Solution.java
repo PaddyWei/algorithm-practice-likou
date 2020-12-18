@@ -3208,8 +3208,64 @@ public class Solution {
         return sum;
     }
 
+    /**
+     * 找不同 -- 本人想法
+     *
+     * @param s
+     * @param t
+     * @return
+     */
+    public static char findTheDifference(String s, String t) {
+        int[] ints = new int[26];
+        for (int i = 0; i < s.length(); i++) {
+            ints[s.charAt(i) - 'a']++;
+            ints[t.charAt(i) - 'a']--;
+        }
+        ints[t.charAt(t.length() - 1) - 'a']--;
+        for (int i = 0; i < ints.length; i++) {
+            if (ints[i] != 0) {
+                return (char) ('a' + i);
+            }
+        }
+        return 'a';
+    }
+
+    /**
+     * 找不同2 -- 优化
+     *
+     * @param s
+     * @param t
+     * @return
+     */
+    public static char findTheDifference2(String s, String t) {
+        int sCount = 0;
+        int tCount = 0;
+        for (int i = 0; i < s.length(); i++) {
+            sCount += s.charAt(i);
+            tCount += t.charAt(i);
+        }
+        tCount += t.charAt(t.length() - 1);
+        return (char) (tCount - sCount);
+    }
+
+    /**
+     * 找不同3 -- 优化
+     *
+     * @param s
+     * @param t
+     * @return
+     */
+    public static char findTheDifference3(String s, String t) {
+        int res = 0;
+        for (char c : (s + t).toCharArray()) {
+            res ^= c;
+        }
+        return (char) res;
+    }
+
     public static void main(String[] args) {
-        System.out.println(wordPattern("abba", "dog dog dog dog"));
+        int[] ints = new int[]{1, 3, 4, 5, 7, 9, 3};
+        System.out.println(findTheDifference("ints", "intss"));
     }
 
 }
