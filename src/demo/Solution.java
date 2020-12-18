@@ -3263,9 +3263,31 @@ public class Solution {
         return (char) res;
     }
 
+    /**
+     * 缺失数字
+     *
+     * @param k
+     * @return
+     */
+    public static int missingElement(int[] nums, int k) {
+        int num = nums[0], count = 0;
+        for (int i = 0; i < nums.length;) {
+            while (num != nums[i]) {
+                count++;
+                if (count == k) {
+                    return num;
+                }
+                num++;
+            }
+            i++;
+            num++;
+        }
+        return num;
+    }
+
     public static void main(String[] args) {
         int[] ints = new int[]{1, 3, 4, 5, 7, 9, 3};
-        System.out.println(findTheDifference("ints", "intss"));
+        System.out.println(missingElement(ints, 6));
     }
 
 }
