@@ -3271,7 +3271,7 @@ public class Solution {
      */
     public static int missingElement(int[] nums, int k) {
         int num = nums[0], count = 0;
-        for (int i = 0; i < nums.length;) {
+        for (int i = 0; i < nums.length; ) {
             while (num != nums[i]) {
                 count++;
                 if (count == k) {
@@ -3285,9 +3285,33 @@ public class Solution {
         return num;
     }
 
+    /**
+     * 字符串中的第一个唯一字符
+     *
+     * @param s
+     * @return
+     */
+    public int firstUniqChar(String s) {
+        Map<Character, Integer> map = new HashMap<>();
+        char[] chars = s.toCharArray();
+        for (int i = 0; i< chars.length; i++) {
+            if (map.containsKey(chars[i])) {
+                map.put(chars[i], -1);
+            } else {
+                map.put(chars[i],i);
+            }
+        }
+        for (char c : chars) {
+            if (map.get(c) != -1) {
+                return map.get(c);
+            }
+        }
+        return -1;
+    }
+
     public static void main(String[] args) {
-        int[] ints = new int[]{1, 3, 4, 5, 7, 9, 3};
-        System.out.println(missingElement(ints, 6));
+        int[] ints = new int[]{0,1,2,2};
+        System.out.println(missingElement(ints, 2));
     }
 
 }
