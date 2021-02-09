@@ -3309,9 +3309,52 @@ public class Solution {
         return -1;
     }
 
+    /**
+     * 最长湍流子数组
+     *
+     * @param arr
+     * @return
+     */
+    public static int maxTurbulenceSize(int[] arr) {
+        if (arr.length < 2){
+            return arr.length;
+        }
+        int count = 1;
+        int intermediateVariables = 1;
+        boolean b = true;
+        for (int i = 0; i < arr.length - 1;) {
+            if (b) {
+                if (arr[i] > arr[i+1]) {
+                    intermediateVariables++;
+                    b = b ? false : true;
+                } else {
+                    count = Math.max(intermediateVariables, count);
+                    intermediateVariables = 1;
+                }
+            } else {
+                if (arr[i] < arr[i+1]) {
+                    intermediateVariables++;
+                    b = b ? false : true;
+                } else {
+                    count = Math.max(intermediateVariables, count);
+                    intermediateVariables = 1;
+                }
+            }
+            if (intermediateVariables == 1) {
+                b = b ? false : true;
+                if (arr[i] == arr[i+1]) {
+                    i++;
+                }
+                continue;
+            }
+            i++;
+        }
+        return Math.max(intermediateVariables, count);
+    }
+
     public static void main(String[] args) {
-        int[] ints = new int[]{0,1,2,2};
-        System.out.println(missingElement(ints, 2));
+        int[] ints = new int[]{0,8,45,88,48,68,28,55,17,24};
+        System.out.println(maxTurbulenceSize(ints));
     }
 
 }
