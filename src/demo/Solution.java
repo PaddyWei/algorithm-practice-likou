@@ -3294,11 +3294,11 @@ public class Solution {
     public int firstUniqChar(String s) {
         Map<Character, Integer> map = new HashMap<>();
         char[] chars = s.toCharArray();
-        for (int i = 0; i< chars.length; i++) {
+        for (int i = 0; i < chars.length; i++) {
             if (map.containsKey(chars[i])) {
                 map.put(chars[i], -1);
             } else {
-                map.put(chars[i],i);
+                map.put(chars[i], i);
             }
         }
         for (char c : chars) {
@@ -3316,15 +3316,15 @@ public class Solution {
      * @return
      */
     public static int maxTurbulenceSize(int[] arr) {
-        if (arr.length < 2){
+        if (arr.length < 2) {
             return arr.length;
         }
         int count = 1;
         int intermediateVariables = 1;
         boolean b = true;
-        for (int i = 0; i < arr.length - 1;) {
+        for (int i = 0; i < arr.length - 1; ) {
             if (b) {
-                if (arr[i] > arr[i+1]) {
+                if (arr[i] > arr[i + 1]) {
                     intermediateVariables++;
                     b = b ? false : true;
                 } else {
@@ -3332,7 +3332,7 @@ public class Solution {
                     intermediateVariables = 1;
                 }
             } else {
-                if (arr[i] < arr[i+1]) {
+                if (arr[i] < arr[i + 1]) {
                     intermediateVariables++;
                     b = b ? false : true;
                 } else {
@@ -3342,7 +3342,7 @@ public class Solution {
             }
             if (intermediateVariables == 1) {
                 b = b ? false : true;
-                if (arr[i] == arr[i+1]) {
+                if (arr[i] == arr[i + 1]) {
                     i++;
                 }
                 continue;
@@ -3352,9 +3352,90 @@ public class Solution {
         return Math.max(intermediateVariables, count);
     }
 
+    /**
+     * K 个不同整数的子数组（过长参数，会导致超时）
+     *
+     * @param A
+     * @param K
+     * @return
+     */
+    public static int subarraysWithKDistinct(int[] A, int K) {
+        int count = K == 1 ? A.length : 0;
+        Map<Integer, Integer> map = new HashMap<>();
+        List<String> list = new ArrayList<>();
+        for (int i = 0; i <= A.length - K; i++) {
+            map.put(A[i], A[i]);
+            List<Integer> list1 = new ArrayList<>();
+            list1.add(A[i]);
+            for (int j = i + 1; j < A.length; j++) {
+                if (!map.containsKey(A[j])) {
+                    map.put(A[j], A[j]);
+                }
+                list1.add(A[j]);
+                if (map.size() == K) {
+                    list.add(list1.toString());
+                    count++;
+                } else if (map.size() > K) {
+                    break;
+                }
+            }
+            map.clear();
+        }
+        System.out.println(list);
+        return count;
+    }
+
+    /**
+     * K 个不同整数的子数组
+     *
+     * @param A
+     * @param K
+     * @return
+     */
+    public int subarraysWithKDistinct2(int[] A, int K) {
+        return atMostKDistinct(A, K) - atMostKDistinct(A, K - 1);
+    }
+
+    /**
+     * 最多包含 K 个不同整数的子区间的个数
+     *
+     * @param A
+     * @param K
+     * @return
+     */
+    private static int atMostKDistinct(int[] A, int K) {
+        int len = A.length;
+        int[] freq = new int[len + 1];
+
+        int left = 0;
+        int right = 0;
+        // [left, right) 里不同整数的个数
+        int count = 0;
+        int res = 0;
+        // [left, right) 包含不同整数的个数小于等于 K
+        while (right < len) {
+            if (freq[A[right]] == 0) {
+                count++;
+            }
+            freq[A[right]]++;
+            right++;
+
+            while (count > K) {
+                freq[A[left]]--;
+                if (freq[A[left]] == 0) {
+                    count--;
+                }
+                left++;
+            }
+            // [left, right) 区间的长度就是对结果的贡献
+            res += right - left;
+        }
+        return res;
+    }
+
     public static void main(String[] args) {
-        int[] ints = new int[]{0,8,45,88,48,68,28,55,17,24};
-        System.out.println(maxTurbulenceSize(ints));
+        int[] ints = new int[]{61, 79, 142, 98, 197, 44, 145, 55, 27, 8, 77, 28, 182};
+        System.out.println(subarraysWithKDistinct(ints, 3));
     }
 
 }
