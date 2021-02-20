@@ -3433,9 +3433,56 @@ public class Solution {
         return res;
     }
 
+    /**
+     * 最大连续1的个数 III
+     *
+     * @param A
+     * @param K
+     * @return
+     */
+    public static int longestOnes(int[] A, int K) {
+        // 中间计数
+        int count = 0;
+        // “零”数
+        int zero = 0;
+        // 阶段最大数
+        int max = 0;
+        for (int left = 0, right = 0; right < A.length; ) {
+            // 判断右指针值为1，且“零”数不超过K，移动右指针
+            if (A[right] == 1 && zero <= K) {
+                right++;
+                count++;
+            }
+            // 判断“零”不超出K，移动右指针
+            else if (zero < K) {
+                right++;
+                count++;
+                zero++;
+            }
+            // 如果“零”到达临界值K，则需要移动左指针，首先判断左指针值是否为0
+            // 如果是，“零”数减一，移动左指针，并记录当前长度
+            // 如果否，“零”数不变，移动左指针，并记录当前长度
+            else if (A[left] == 0) {
+                max = Math.max(count, max);
+                zero--;
+                count--;
+                left++;
+            }
+            // 如果
+            else {
+                max = Math.max(count, max);
+                count--;
+                left++;
+            }
+        }
+        // 进行最后一次长度记录，保证最后结束长度可以进行记录
+        max = Math.max(count, max);
+        return max;
+    }
+
     public static void main(String[] args) {
-        int[] ints = new int[]{61, 79, 142, 98, 197, 44, 145, 55, 27, 8, 77, 28, 182};
-        System.out.println(subarraysWithKDistinct(ints, 3));
+        int[] ints = new int[]{0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1};
+        System.out.println(longestOnes(ints, 3));
     }
 
 }
