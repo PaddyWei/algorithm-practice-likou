@@ -3480,9 +3480,48 @@ public class Solution {
         return max;
     }
 
+    /**
+     * 翻转图像 --- 本人想法
+     *
+     * @param A
+     * @return
+     */
+    public int[][] flipAndInvertImage(int[][] A) {
+        int[][] B = new int[A.length][];
+        int[] C = null;
+        for (int i = 0; i < A.length; i++) {
+            C = new int[A[i].length];
+            for (int j = A[i].length - 1, k = 0; j >= 0; j--, k++) {
+                C[k] = A[i][j] == 0 ? 1 : 0;
+            }
+            B[i] = C;
+        }
+        return B;
+    }
+
+    /**
+     * 翻转图像2 --- 优化内存
+     *
+     * @param A
+     * @return
+     */
+    public int[][] flipAndInvertImage2(int[][] A) {
+        int temp;
+        for (int i = 0; i < A.length; i++) {
+            for (int j = A[i].length - 1, k = 0; j >= k; j--, k++) {
+                temp = A[i][k] ^ 1;
+                A[i][k] = A[i][j] ^ 1;
+                A[i][j] = temp;
+            }
+        }
+        return A;
+    }
+
     public static void main(String[] args) {
-        int[] ints = new int[]{0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1};
-        System.out.println(longestOnes(ints, 3));
+//        int[] ints = new int[]{0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1};
+//        System.out.println(longestOnes(ints, 3));
+        System.out.println(1 ^ 1);
+        System.out.println(0 ^ 1);
     }
 
 }
